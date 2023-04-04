@@ -24,7 +24,7 @@ const routes = require("./routes/index.js");
 
 app.name = "API";
 
-// "http://localhost:3000" "https://arielzarate.github.io"
+
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -37,7 +37,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/", routes);
+app.use("/api", routes);
 
 // catch 404 and forward to error handler middleware
 app.use(function (req, res, next) {

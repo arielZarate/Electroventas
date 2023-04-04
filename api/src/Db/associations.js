@@ -1,28 +1,15 @@
-const Product =require('../models/Product-model');
-const Category=require('../models/Category-model')
-
+const Product =require('../models/product');
+const Categories=require('../models/categories')
+const Roles=require('../models/users/roles')
+const User=require('../models/users/user')
 //ACA TENEMOS LAS ASOCIACIONES👌
- Product.belongsToMany(Category, {
-  through: "productByCategory",
-  // foreignKey: "genresId",
-});
 
-Category.belongsToMany(Product, {
-  through: "productByCategory",
-});
+
+Product.belongsToMany(Categories, { through: "ProductByCategories" });
+Categories.belongsToMany(Product, { through: "ProductByCategories" });
+
+
+//user-->Role
+ User.belongsTo(Roles,/* { foreignKey: 'roleId' } */); //un usuario pertenece a un rol
+  Roles.hasMany(User);  //roles tiene muchos users
  
-//opcion2  by JorgeVega
-/* const gameModel = require("../models/Videogames-model");
-
-gameModel(sequelize); ==>> esto que le pasa por paramnetros es el sequelize del model
-
-// el modelo esta asi
-
-module.exposrts=(sequelize)=>{
-  sequelize.define("User",{
-    
-  })
-}
-const {Videogames}=sequelize.models;
-//despues hago las realciones
- */

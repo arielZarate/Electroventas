@@ -16,33 +16,40 @@ const Product = sequelize.define(
       allowNull: false,
     },
 
+    make: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    model: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     description: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
 
-    
-    precio:{
-      type:DataTypes.DOUBLE,
-      allowNull:false,
-      validate:{
-        min:0 , 
-      }
-    }
-    ,
+    price: {
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+      validate: {
+        min: 0,
+      },
+    },
+
     rating: {
       type: DataTypes.INTEGER,
       allowNull: false,
       //quiero validar que sea del 1 al 5 asi lo puedo tipificar al juego
       validate: {
-        /*  isNumeric: true, */
+        isNumeric: true,
         max: 5,
         min: 1,
       },
     },
-   
-  
-   /*  createdInDb: {
+
+    /*  createdInDb: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
@@ -50,7 +57,11 @@ const Product = sequelize.define(
   },
 
   {
-    timestamps: false,
+    timestamps: true,
+    paranoid: true,
+    createdAt:'createTimestamp',
+    updatedAt: "updateTimestamp",
+    deletedAt: "destroyTimestamp",
   }
 );
 
