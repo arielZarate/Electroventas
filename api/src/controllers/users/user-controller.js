@@ -17,7 +17,7 @@ async function getUsers(req, res) {
 
       include: {
          model: Roles,
-        attributes: ["rol"], }, 
+        attributes: ["role"], }, 
       });
       //console.log(findUser[0].dataValues);
       findUser
@@ -29,12 +29,16 @@ async function getUsers(req, res) {
     }
   } else { 
     try {
-      let allUsers = await User.findAll()
-       // where: { status: 1 },
-    /*     include: {
+      let allUsers = await User.findAll({
+
+           include: {
           model: Roles,
-          attributes: ["rol"],
-        }, */
+          attributes: ["role"],
+        },
+
+      })
+       // where: { status: 1 },
+   
     
       allUsers.length
       ? res.status(200).json(allUsers)

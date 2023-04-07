@@ -3,10 +3,13 @@ const  User = require("../../models/users/user");
 const  Roles = require("../../models/users/roles");
 const jwt = require("jsonwebtoken"); 
 const bcrypt = require("bcrypt");
-const {generateJWT,verify}=require('./JWT')
+const {generateJWT}=require('./generateJWT');
+const { verifyJWT } = require("./verifyJWT");
+
+
 const {SECRET_KEY}=process.env;
 
-async function login(req, res) {
+  const login= async(req, res)=> {
   let { email, password } = req.body;
 
   try {
@@ -26,8 +29,10 @@ async function login(req, res) {
       return res.status(400).json({ error: "password incorrect" });
 
 
-  //si todo es correcto
-   /*  let token = jwt.sign(
+  
+   /* 
+   genere una funcion externa que se llma jwt
+   let token = jwt.sign(
       {
        id: userRecovery.id,
         name: userRecovery.userName,
@@ -36,12 +41,21 @@ async function login(req, res) {
         'mi_clave_secreta'     
     );  */
  
+      //si el usuario y el password esta bien ... 
     
-    let token =generateJWT(userRecovery.id,userRecovery.email )
+    let token =generateJWT(userRecovery.id,userRecovery.email,userRecovery.role )
 
-    if(verify(token,SECRET_KEY))
+    console.log('SECRET_KEY',SECRET_KEY)
+
+    if(verifyJWT(token,SECRET_KEY)){
+    console.log("esta validado!!")
     {
        res.json({ message: "successful login",userRecovery,token });
+    }
+  }else{
+      console.log(
+        "No se valido el token con jwt"
+      )
     }
 
    //ACA LE MANDO EL TOKEN AL FRONT

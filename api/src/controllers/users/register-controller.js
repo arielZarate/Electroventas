@@ -31,7 +31,7 @@ const registerUser = async (req, res) => {
       ? res.status(200).send("Usuario created successfully 👌")
       : res.status(404).json("Usuario not created 😣 "); 
   } catch (error) {
-    return res.status(400).send({ message: error.message });
+    return res.status(400).send({ error: error.message });
   }
 };
 

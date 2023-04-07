@@ -1,17 +1,4 @@
-const jwt = require('jsonwebtoken')
-const {SECRET_KEY}=process.env
-const generateJWT =  (id, email) => {
-  try {
-    const payload = { id, email }
-    const token =  jwt.sign(payload,SECRET_KEY, { expiresIn: '2h' })
-    return token
-  } catch (error) {
-    console.log(error)
-    throw new Error('JWT could not be generated')
-  }
-}
-
-
+const jwt = require('jsonwebtoken');
 /* const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = process.env;
 
@@ -32,7 +19,7 @@ function verifyToken(req, res, next) {
 module.exports = verifyToken; */
 
 
-const verify = (token, secretKey) => {
+const verifyJWT = (token, secretKey) => {
   try {
     jwt.verify(token, secretKey)
     return true
@@ -42,6 +29,4 @@ const verify = (token, secretKey) => {
 }
 
 
-module.exports = {
-  generateJWT, verify
-}
+module.exports={verifyJWT}
