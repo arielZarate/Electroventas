@@ -56,6 +56,20 @@ const User = sequelize.define(
     } 
     ,
 
+    token_expiration_date: {
+  type: DataTypes.DATE,
+  allowNull: true,
+
+   //defaultValue: sequelize.literal('2000-01-01 00:00:00'),
+
+/*   get() {
+    const expirationDate = this.getDataValue('token_expiration_date');
+    return expirationDate ? moment(expirationDate).format('DD/MM/YYYY HH:mm:ss') : null;
+  },
+  set(value) {
+    this.setDataValue('token_expiration_date', value ? moment(value, 'DD/MM/YYYY HH:mm:ss').toDate() : null);
+  } */
+}
    /*  avatarId: {
       type: DataTypes.STRING,
     },  */

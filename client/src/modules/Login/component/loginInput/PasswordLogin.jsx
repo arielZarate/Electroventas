@@ -7,7 +7,7 @@ import { Icon } from '@iconify/react';
 
 
 //funcion
-function PasswordLogin({ input, handleChange,errors }) {
+function PasswordLogin({ input, handleChange,error }) {
     const [showPassword, setShowPassword] = useState(false);
   return (
         <>
@@ -28,18 +28,21 @@ function PasswordLogin({ input, handleChange,errors }) {
                           </InputAdornment>
                       ),
                   }}
-              // helperText={errors.password?errors.password:{}}
+                 error={error.password?true:false}
+                  helperText={error.password?error.password:''} 
+
+         
               />
           
             {/*   {errors.password && (
                   <p style={{color:'red'}}>{errors.password}</p>
               )}*/}
 
-              {errors.password !== undefined ? (
+              {/* {errors.password !== undefined ? (
                   <Alert severity="error" sx={{ margin: "150x 0" }}>
                       {errors.password}
                   </Alert>
-              ) : null}
+              ) : null} */}
         </Stack>
 
       </>

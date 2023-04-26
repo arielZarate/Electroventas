@@ -16,7 +16,7 @@ const createProduct = async (req, res) => {
       model,
       description,
       price,
-      rating,
+      rating
     });
 
     newProduct

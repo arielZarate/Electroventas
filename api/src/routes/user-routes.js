@@ -8,7 +8,7 @@ const {getUsers,
 
 const middleware=require('../middlewares/user-validate')
 
-const {registerUser}=require('../controllers/users/register-controller')
+const {registerUser}=require('../controllers/users/registerUser-controller')
 
        //Rutes
 router.get("/:id",getUserById); //trae por id

@@ -18,8 +18,8 @@ const registerUser = async (req, res) => {
      phone,
      username,
      email,
-     password:await bcrypt.hash(password, 10) //encripto con bcrypt
-    // roleId: role.id
+     password:await bcrypt.hash(password, 10), //encripto con bcrypt
+    // roleId: role.id    NO HACE FALTA YA QUE LA RELACION DE ASOCIACION LO GENERA SOLO 😁
     });
 
     //await newUsuario.addLocation(location); //esto es para muchos a muchos

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Stack, TextField ,Alert} from '@mui/material';
 
-function EmailLogin({ input,  handleChange,errors }) {
+function EmailLogin({ input,  handleChange,error }) {
   return (
 
     <>
@@ -9,22 +9,39 @@ function EmailLogin({ input,  handleChange,errors }) {
       <Stack>
         <TextField
           name="email"
-          type='email'
-          label="email"
+          type="email"
+          label="Email"
           variant="outlined"
+          autoFocus={true}
           value={input.email}
           onChange={handleChange}
-        /*   errors={errors} */
-       /*    helperText={errors?errors.email:{}} */
+           error={error.email?true:false}
+          helperText={error.email?error.email:''}
+
+    
         />
-      {/*   {errors.email && (
+
+
+
+        
+      {/*  
+
+      =====opcion2 Error===========
+      {errors.email && (
           <p style={{color:'red'}}>{errors.email}</p>
-        )} */}
-        {errors.email !== undefined ? (
+        )}
+
+     
+      ======== opcion 3 Error==========
+
+       {errors.email !== undefined ? (
           <Alert severity="error" sx={{ margin: "10px 0" }}>
             {errors.email}
           </Alert>
-        ) : null}
+        ) : null} 
+        
+        
+        */}
       </Stack>
     
     </>

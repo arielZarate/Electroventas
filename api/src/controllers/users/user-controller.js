@@ -9,7 +9,7 @@ const Roles = require('../../models/users/roles')
 async function getUsers(req, res) {
   //busca por email
   let { email } = req.query;
-  console.log(email);
+ // console.log(email);
   if (email) {
     try {
       let findUser = await User.findAll({
@@ -31,7 +31,7 @@ async function getUsers(req, res) {
     try {
       let allUsers = await User.findAll({
 
-           include: {
+          include: {
           model: Roles,
           attributes: ["role"],
         },
@@ -107,7 +107,7 @@ const updateUser = async (req, res) => {
       if (!userById) {
         throw new Error("User not found by Id");
       } else {
-      let { firstname,lastname ,image,username, email, password} = req.body;
+      let { firstname,lastname ,image,username, email, password, token_expiration_date} = req.body;
 
      /*    
           use('un') middleware
@@ -129,8 +129,9 @@ const updateUser = async (req, res) => {
           if (username) userById.username = username;
           if (email) userById.email = email;
           if (password) userById.password = password;
+          if(token_expiration_date)userById.token_expiration_date=token_expiration_date;
       
-          await userById.save();
+          await userById.save();  //esto guarda los cambios , no hace falta pasar todos los params tampoco actualiza solo lo que se pasa :)
           return res.status(200).json(userById);
         }
      // }
@@ -143,12 +144,15 @@ const updateUser = async (req, res) => {
 
 
 
+
+
 module.exports = {
   getUsers,
   getUserById,
   restoreUser,
   deleteUser,
-  updateUser
+  updateUser,
+
  /* 
   statusCero,
   pageCurrentOne,

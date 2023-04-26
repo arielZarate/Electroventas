@@ -1,16 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import Router from './Routes'
 import axios from 'axios';
-import LoginPage from './pages/Login Pages/LoginPages'
+import LoginPages from './Modules/Login/pages/LoginPages'
+
+
 function App() {
-axios.defaults.baseURL="http://localhost:3000/api";
+//axios.defaults.baseURL="http://localhost:3000/api";  //ya cree  AxosInstance
   return (
     <div className="App">
    {/*    <Router/> */}
-     <LoginPage/>
+     <LoginPages/> 
     </div>
   )
 }
