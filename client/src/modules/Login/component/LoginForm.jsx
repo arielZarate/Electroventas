@@ -86,29 +86,31 @@ export default function LoginForm() {
        
       try {
         
-       // const response = await axios.post('/login/', input, { headers: { 'Content-Type': 'application/json' }});
-        let token=getStoreToken();
- 
+    
+    /*     
+       //sin axios interceptor
+     let token=getStoreToken();
+        console.log('getStoreToken',token);
         const response = await axios.post('http://localhost:3000/api/login/',input,
           {
                headers: {
                 Authorization: `Bearer ${token}` 
                }
            }  
-        );
-   
-   
-         if (response.status >= 200 && response.status < 300)
-        {
-            
-           // localStorage.setItem("token",response.data.token);
-           storeToken(response.data.token) 
-          // console.log("token guardado");
-           //console.log(response.data)
-        Notification('success', "Ha iniciado sesion con exito", 'top-end', 2000);//envio una notificacion con sweetAlert2
-        }  
+        ); */
 
-       
+         const response= await AxiosInstance.post('/login/',input);
+             if (response.status >= 200 && response.status < 300)
+            {
+           // localStorage.setItem("token",response.data.token);
+              storeToken(response.data.token) 
+              // console.log("token guardado");
+              //console.log(response.data)
+              Notification('success', "Ha iniciado sesion con exito", 'top-end', 2000);//envio una notificacion con sweetAlert2
+            }  
+
+        
+
 
       } catch (error) {
        

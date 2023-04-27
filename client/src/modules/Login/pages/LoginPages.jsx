@@ -58,7 +58,7 @@ const StyledCard = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function LoginPage() {
+export default function LoginPages() {
 /*     const mdUp = useResponsive('up', 'md'); */
 
     return (

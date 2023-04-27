@@ -14,28 +14,7 @@ const {generateTimeExpirationInSeconds}=require('./generate_time_expiration_toke
 const auth= async(req, res)=> {  
 try 
   {
-    
-     // Verificar si el usuario ha iniciado sesión
-    const token = req.headers.authorization?.split(" ")[1];
-
-    if (!token) {
-      console.log("Token no proporcionado. El usuario debe iniciar sesión");
-      return res.status(401).send({
-        error: "No se proporcionó un token. Debe iniciar sesión para acceder a esta página.",
-      });
-    }
-
-    // Validar el token
-    const decoded = verifyJWT(token);
-
-    if (!decoded) {
-      console.log("Token inválido. El usuario debe iniciar sesión para generar un nuevo token");
-      return res.status(401).send({
-        error: "Token inválido. Debe iniciar sesión para generar un nuevo token.",
-      });
-    }
-
- 
+  
     //==========================================================================
     let { email, password } = req.body;
 
@@ -62,18 +41,18 @@ try
 
 
 
-      
-
-
       /*antes de generar un token debo saber si tiene uno y si tiene  si esta vigente */
+
+        const token = req.headers.authorization?.split(" ")[1];
+        console.log('token:', token)
   
-    if (!user_logged.token_expiration_date || user_logged.token_expiration_date < Date.now()) {
+    if (!user_logged.token_expiration_date||user_logged.token_expiration_date < Date.now()|| (user_logged.token_expiration_date!==null && !token)) {
 
      
       // Generar nuevo token y actualizar fecha de expiración en la base de datos
        let expirationDate = generateTimeExpirationInSeconds();
       let result = await update_date_for_login({ id: user_logged.id, expirationDate });
-
+          console.log("actualizando datos bd")
       if (!result) {
         return res.status(500).json({ error: "error updating expiration date" });
       }
@@ -86,8 +65,12 @@ try
       return res.json({ message: "successful login", obj: { role, username, email }, token });
     }
 
+
+
     // El token está vigente, verificar si es válido
-  
+
+  // Si el token es válido, borrar la variable de estado del mensaje de error en el objeto de sesión del usuario
+   // req.session.invalidTokenErrorShown = false;
     const authHeader = req.headers.authorization.split(' ')[1];  //ignora el Bearer
 
     if (authHeader) {
@@ -95,7 +78,17 @@ try
 
       const token = authHeader;
       const decoded = verifyJWT(token);
+      
+        // Validar el token
+    
+/*     if (!decoded) {
+      console.log("Token inválido. El usuario debe iniciar sesión para generar un nuevo token");
+      return res.status(401).send({
+        error: "Token inválido. Debe iniciar sesión para generar un nuevo token.",
+      }); 
+    } 
 
+*/
       if (decoded && decoded.id.id === user_logged.id) //verifica si es el mismo user
       {
         console.log("successful login")
@@ -105,7 +98,10 @@ try
        //console.log(username,email,role);
         return res.json({ message: "successful login",role,username,email, token });
      }
-    }
+    } 
+
+
+
     else{
           // El token no es válido
       return res.status(401).json({ error: error.message });
