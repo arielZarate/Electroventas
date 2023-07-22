@@ -1,15 +1,13 @@
-
-
-//import rootReducer from "../Reducer";
-import { legacy_createStore as createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk'
-import { composeWithDevTools } from '@redux-devtools/extension';
-
-//reveer esto
-const store = createStore(
-    //rootReducer,
-    composeWithDevTools( applyMiddleware(thunk))
-);
-
-
+import { configureStore } from "@reduxjs/toolkit";
+//import {productSlice} from "./feactures/productSlices";
+import productSlice from "./feactures/Slices/products";
+import brandSlice from "./feactures/Slices/brand";
+import categorySlice from "./feactures/Slices/category";
+const store = configureStore({
+  reducer: {
+    productStore: productSlice,
+    brandStore: brandSlice,
+    categoryStore: categorySlice,
+  },
+});
 export default store;

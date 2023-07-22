@@ -1,19 +1,36 @@
 import React from "react";
 
 import LoginPage from "./modules/Login/pages/LoginPages";
-import { Routes, Route, Link } from "react-router-dom";
-import LandingPage from "./modules/Landing/LandingPage";
-import HomePage from "./modules/Home/HomePage";
-import NavBar from "./modules/Layout/NavBar";
+import { Routes as Router, Route, Link, useLocation } from "react-router-dom";
+import LandingPage from "./Components/Landing/LandingPage";
+import HomePage from "./Components/Home/HomePage";
+import Header from "./modules/Layout/Header";
+import FormProduct from "./Components/Formulario/FormProduct";
+import CardDetail from "./Components/Cards/CardDetail";
+import FormBrand from "./Components/Formulario/FormBrand";
+import FormCategory from "./Components/Formulario/FormCategory";
+
 function RoutesAll() {
+  const location = useLocation();
+
+  // Verifica si la ruta actual es la página de inicio
+  const isLandingPage = location.pathname === "/";
+
   return (
-    <div>
-      <Routes>
+    <>
+      {!isLandingPage && <Header />}
+      <Router>
+        {/* Renderiza el Header solo si no estás en la página de inicio */}
+
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
-      </Routes>
-    </div>
+        <Route path="/formProduct" element={<FormProduct />} />
+        <Route path="/formBrand" element={<FormBrand />} />
+        <Route path="/formCategory" element={<FormCategory />} />
+        <Route path="/products/:id" element={<CardDetail />} />
+      </Router>
+    </>
   );
 }
 

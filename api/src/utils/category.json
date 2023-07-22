@@ -1,0 +1,23 @@
+{
+    "data": [
+        {  
+            "id": 1,
+            "name": "Electricidad"
+        },
+    
+        {    
+            "id": 2,
+            "name": "Iluminacion"
+        }
+        ,
+        {    
+            "id": 3,
+            "name": "cables"
+        }
+        ,
+        {    
+            "id": 4,
+            "name": "Herramientas"
+        }
+    ]
+}

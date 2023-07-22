@@ -69,7 +69,7 @@ export default function LoginPages() {
   return (
     <>
       <StyledRoot>
-        <Container maxWidth="sm">
+        <Container maxWidth="sm" sx={{ marginTop: 20 }}>
           <StyledContent>
             {/* este esta porque antes habia otro contenedor aparte del card */}
             <StyledCard>

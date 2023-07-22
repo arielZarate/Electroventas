@@ -7,16 +7,22 @@ const sequelize = require("../Db/db");
 const Product = sequelize.define(
   "Product",
   {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    image: {
+    /*  image: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-
-    make: {
+ */
+    brand: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -49,6 +55,11 @@ const Product = sequelize.define(
       },
     },
 
+    categoryId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+
     /*  createdInDb: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -59,7 +70,7 @@ const Product = sequelize.define(
   {
     timestamps: true,
     paranoid: true,
-    createdAt:'createTimestamp',
+    createdAt: "createTimestamp",
     updatedAt: "updateTimestamp",
     deletedAt: "destroyTimestamp",
   }

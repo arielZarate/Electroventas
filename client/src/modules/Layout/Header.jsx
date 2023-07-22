@@ -110,7 +110,7 @@ const navItems = [
 //========================================================================================
 
 function DrawerAppBar(props) {
-  const { window } = props;
+  /*   const { window } = props; */
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -127,9 +127,9 @@ function DrawerAppBar(props) {
       </Typography>
       <Divider sx={{ background: "#fefefe", padding: "1px" }} />
       <List>
-        {navItems.map((item) => (
-          <ListItem key={item.name} disablePadding>
-            <ListItemButton sx={{}}>
+        {navItems.map((item, index) => (
+          <ListItem key={index} disablePadding>
+            <ListItemButton>
               <ListItemIcon sx={{ color: "white" }}>{item.icon} </ListItemIcon>
               <ListItemText primary={item.name} sx={{ marginLeft: "-30px" }} />
             </ListItemButton>
@@ -139,8 +139,8 @@ function DrawerAppBar(props) {
     </Box>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  /*   const container =
+    window !== undefined ? () => window().document.body : undefined; */
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -236,8 +236,9 @@ function DrawerAppBar(props) {
           />
         </Box>
         <Box sx={{ display: { xs: "none", sm: "block" } }}>
-          {navItems.map((item) => (
+          {navItems.map((item, index) => (
             <Button
+              key={index}
               variant="outlined"
               /*   startIcon={item.icon} */
               sx={{ color: "#fff" }}
@@ -250,7 +251,7 @@ function DrawerAppBar(props) {
 
       <Box component="nav">
         <Drawer
-          container={container}
+          /*   container={container} */
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}

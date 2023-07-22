@@ -1,27 +1,48 @@
 //CRUD API MASCOTAS
 
 const Product = require("../models/product");
+const Images = require("../models/Images");
 const { Op } = require("sequelize");
-
-
+const Category = require("../models/category");
 
 const createProduct = async (req, res) => {
   try {
-    let { name, image, make, model, description, price, rating } = req.body;
-    //console.log(req.body);
-    let newProduct = await Product.create({
+    let {
       name,
       image,
-      make,
+      brand,
       model,
       description,
       price,
-      rating
+      rating,
+      categoryId,
+    } = req.body;
+    //console.log(req.body);
+    let newProduct = await Product.create({
+      name,
+      brand,
+      model,
+      description,
+      price,
+      rating,
+      categoryId: parseInt(categoryId),
     });
 
+    const productId = newProduct.id;
+    //  console.log(productId);
+    //console.log(image);
+
+    // Crear la imagen
+    let newImage = await Images.create({
+      url: image, // URL de la imagen que recibes en el body de la solicitud
+      principal: true,
+      productId, // Asocia la imagen con el producto mediante su ID
+    });
+    //  console.log("imagen agregada", newImage);
+
     newProduct
-      ? res.status(200).send("Product created successfully 👌")
-      : res.status(404).json("Product not created ☹ ");
+      ? res.status(200).send(newProduct)
+      : res.status(404).json({ message: error.message });
   } catch (error) {
     return res.status(400).send({ message: error.message });
   }
@@ -53,7 +74,27 @@ const getProduct = async (req, res) => {
   try {
     const { name } = req.query; //opcion por name req.query
     if (!name) {
-      const products = await Product.findAll();
+      // const products = await Product.findAll();
+      const products = await Product.findAll({
+        attributes: [
+          "id",
+          "name",
+          "brand",
+          "model",
+          "description",
+          "price",
+          "rating",
+        ],
+        include: {
+          model: Images,
+          // model: Category,
+          /*   as: "imagenes", */
+
+          attributes: ["id", "url"],
+        },
+      });
+
+      //console.log("get back", products[0]);
       products
         ? res.json(products)
         : res.status(404).json({ message: "Product not Found 😕" });
@@ -82,7 +123,17 @@ const getProduct = async (req, res) => {
 const productById = async (req, res) => {
   try {
     const { id } = req.params;
-    const productById = await Product.findByPk(id);
+    const productById = await Product.findAll({
+      where: { id: id },
+      include: {
+        model: Images,
+        /*   as: "imagenes", */
+
+        attributes: ["url"],
+      },
+    });
+
+    console.log(productById);
     productById
       ? res.json(productById)
       : res.status(400).json("There are no product with that id in the db");
@@ -123,6 +174,10 @@ const updateProduct = async (req, res) => {
         throw new Error("Product not found by Id");
       } else {
         let { name, image, make, model, description, price, rating } = req.body;
+        // Busca la imagen asociada al producto por su productId
+        const imageToUpdate = await Images.findOne({
+          where: { productById },
+        });
 
         if (
           !name ||
@@ -138,7 +193,7 @@ const updateProduct = async (req, res) => {
           //actualizo con lo pasado en parametros
           if (name) productById.name = name;
           if (description) productById.description = description;
-          if (image) productById.image = image;
+          if (imageToUpdate) imageToUpdate.url = image;
           if (make) productById.make = make;
           if (model) productById.model = model;
           if (rating) productById.rating = rating;
@@ -153,7 +208,6 @@ const updateProduct = async (req, res) => {
     return res.status(400).send({ error: error.message });
   }
 };
-
 
 // recibe por param el id del producto a restaurar modo paranoid
 const restoreProduct = async (req, res) => {

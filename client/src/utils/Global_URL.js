@@ -1,5 +1,5 @@
 const Global_URL = {
- url_back_local: "http://localhost:3001",
- 
+  //http://localhost:3000/api/products/4
+  url_back_local: "http://localhost:3000/api",
 };
 export default Global_URL;
