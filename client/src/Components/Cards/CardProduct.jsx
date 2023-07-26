@@ -17,16 +17,6 @@ import { Link } from "react-router-dom";
 import { BsFillCartPlusFill } from "react-icons/bs";
 import { MdFavorite } from "react-icons/md";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-/* 
-"name": "Tester Digital",
-    "image": "https://d3ugyf2ht6aenh.cloudfront.net/stores/001/329/380/products/tester-31-f972816a81a567ccd716517781235703-640-0.jpg",
-    "brand": "dhv",
-    "model": "HBT56",
-    "description": "ESTE TESTER ES INNOVADOR SISTEMA DE PANTALLA COLOR TODOS LOS RANGOS ESTÁN ESPECIFICADOS EN UNA DE LAS FOTOGRAFÍAS. LA MARCA HABOTEST ES UNA DE LAS DOS MEJORES EN EL MERCADO .NO PUEDO PONER MAS ESPECIFICACIONES POR QUE LA PAGINA ME TOMA QUE ESTOY ESCRIBIENDO EN HTML. PARA TODA INFORMACIÓN TÉCNICAS EN UNA DE LAS FOTOGRAFÍAS. VER EN FOTOGRAFÍA NÚMERO 7 LOS DETALLES TÉCNICOS.",
-    "price": 1500,
-    "rating": 4,
-
-*/
 
 export default function CardProduct(props) {
   const {

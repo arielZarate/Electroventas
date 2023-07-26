@@ -39,7 +39,7 @@ export default function FormCategory() {
 
     try {
       // Aquí puedes realizar las acciones que desees con los valores de las marcas
-      console.log(categories);
+      //  console.log(categories);
       dispatch(AddCategory(categories)); // Llamar al middleware para agregar el producto
     } catch (error) {
       console.error(error.message);

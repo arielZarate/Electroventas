@@ -21,7 +21,7 @@ export const AddCategory = (prop) => {
 
       // Puedes realizar acciones adicionales si es necesario
 
-      console.log(response.data);
+      //console.log(response.data);
 
       if (response.data) {
         alert("CATEGORIAS AGREGADAS ");

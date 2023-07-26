@@ -1,6 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { TextField, Button, Box, Typography, Avatar } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  Avatar,
+  IconButton,
+} from "@mui/material";
 import {
   Select,
   InputLabel,
@@ -8,9 +15,13 @@ import {
   FormControl,
   FormHelperText,
 } from "@mui/material"; //selector
+
+import axios from "axios";
 import { Container, CssBaseline } from "@mui/material";
 import { styled } from "@mui/system";
 import { FcNews } from "react-icons/fc";
+
+import { Clear } from "@mui/icons-material";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -22,8 +33,21 @@ import { getCategories } from "../../redux/feactures/Thunks/category";
 
 // inicio de componnet
 const ProductForm = () => {
-  const { register, handleSubmit } = useForm();
-  // const fileInputRef = useRef(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitted },
+    setValue,
+  } = useForm({
+    defaultValues: {
+      brand: "", // Establecer el valor inicial del selector a una opción vacía o el valor que desees.
+    },
+  });
+
+  // Nuevo estado para almacenar las imágenes seleccionadas
+  const [selectedImages, setSelectedImages] = useState([]);
+
+  const fileInputRef = useRef(null);
   const dispatch = useDispatch();
 
   //============SELECTORES=================
@@ -39,8 +63,20 @@ const ProductForm = () => {
     dispatch(getCategories());
   }, [dispatch]);
 
+  // Función para manejar el cambio de imágenes seleccionadas
+  const handleImageChange = (event) => {
+    const files = event.target.files;
+
+    if (files) {
+      // Convertir la lista de FileList a un array y almacenar en el estado
+      setSelectedImages([...files]);
+    } else {
+      setSelectedImages([]);
+    }
+  };
+
   //envio de formulario
-  const onSubmit = (data, event) => {
+  const onSubmit = async (data, event) => {
     event.preventDefault(); // Prevenir recarga del formulario
     //console.log(data);
 
@@ -52,31 +88,39 @@ const ProductForm = () => {
       formData.append("description", data.description);
       formData.append("rating", data.rating);
       formData.append("brand", data.brand);
-      formData.append("category", data.category);
+      formData.append("categoryId", data.categoryId);
 
       // Agregar imágenes al FormData
-      formData.append("image", data.image[0]); // El primer archivo seleccionado para "image"
+      formData.append("image", selectedImages[0]); // El primer archivo seleccionado para "image"
+
+      // Agregar imágenes al FormData
+      /*   selectedImages.forEach((image) => {
+        formData.append("image", image); // Agregar los archivos al FormData
+        // console.log("image", image);
+      }); */
       // formData.append("image2", data.image2[0]); // El primer archivo seleccionado para "image2"
       //formData.append("image3", data.image3[0]); // El primer archivo seleccionado para "image3"
 
       //console.log(formData.getAll());
 
-      for (const entry of formData.entries()) {
+      /*    for (const entry of formData.entries()) {
         const [key, value] = entry;
         console.log(key, value); // Imprime cada clave y valor en el FormData
-      }
+      } */
 
       // Si utilizas Redux, puedes enviar el FormData al Thunk AddProduct
       // Ejemplo: dispatch(AddProduct(formData))
-      // dispatch(AddProduct(data)); // Llamar al middleware para agregar el producto
+      dispatch(AddProduct(formData)); // Llamar al middleware para agregar el producto
+
+      /*       const response = await axios.post(
+        // `${Global.url_back_local}/products/`,
+        "http://localhost:3000/api/products/",
+        formData
+      ); // Llama a la función que agrega el producto en el servidor */
     } catch (error) {
       console.error(error.message);
     }
   };
-
-  /*   const handleCustomFileButtonClick = () => {
-    fileInputRef.current.click();
-  }; */
 
   return (
     <Box
@@ -91,7 +135,6 @@ const ProductForm = () => {
 
         <Box
           component="form"
-          /* inportante poner el encType */
           encType="multipart/form-data"
           onSubmit={handleSubmit(onSubmit)}
         >
@@ -113,63 +156,65 @@ const ProductForm = () => {
           </Box>
 
           {/* input datos */}
-          <TextField {...register("name")} label="Nombre" required fullWidth />
-
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              gap: 2,
-              marginY: 2,
-            }}
-          >
-            {/*      <TextField
-              {...register("image")}
-              type="file"
-              label="principal"
-              required
-              fullWidth
-            /> */}
-            {/*    <TextField
-              {...register("image2")}
-              label="alternativa 1"
+          <FormControl fullWidth variant="outlined" error={!!errors.name}>
+            <TextField
+              {...register("name", {
+                required: "Debe llenar el campo Nombre de Producto",
+              })}
+              error={!!errors.name}
+              label="Nombre de producto"
+              type="text"
               fullWidth
             />
-          */}
+            {isSubmitted && errors.name && (
+              <FormHelperText> {errors.name.message}</FormHelperText>
+            )}
+          </FormControl>
 
-            <label
-              htmlFor="image"
-              style={{
-                display: "inline-block",
-                cursor: "pointer",
-                width: "100%",
-              }}
-            >
-              <div
-                style={{
-                  /*  width: "100% !important", */
-                  height: "50px",
-                  backgroundColor: "#e0e0e0", // Color de fondo del cuadradito
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: "30px",
-                  borderRadius: "10px",
-                }}
-              >
-                <Typography>Seleccionar Imagen</Typography>{" "}
-                {/* Texto dentro del cuadradito */}
-              </div>
-              <input
+          {/* inciio de images */}
+
+          <Box sx={{ marginY: 2 }}>
+            <FormControl fullWidth variant="outlined" error={!!errors.image}>
+              <TextField
                 type="file"
-                id="image"
-                {...register("image")}
-                style={{ display: "none" }}
-                required
+                {...register("image", {
+                  required: "Debe seleccionar una imagen",
+                })}
+                error={!!errors.image}
+                id="outlined-basic"
+                label=""
+                variant="outlined"
+                fullWidth
+                onChange={handleImageChange}
+                //agregado para la vision previa
               />
-            </label>
+
+              {isSubmitted && errors.image && (
+                <FormHelperText> {errors.image.message}</FormHelperText>
+              )}
+
+              {selectedImages.length > 0 && (
+                <div>
+                  <h6>Vista previa de las imágenes seleccionadas:</h6>
+                  {selectedImages.map((image, index) => (
+                    <img
+                      key={index}
+                      src={URL.createObjectURL(image)}
+                      alt={`Vista previa ${index + 1}`}
+                      style={{
+                        width: "200px",
+                        height: "auto",
+                        marginX: "20px",
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+            </FormControl>
           </Box>
 
+          {/* fin de la image */}
+
           <Box
             sx={{
               display: "flex",
@@ -178,42 +223,62 @@ const ProductForm = () => {
               marginY: 2,
             }}
           >
-            <TextField
-              {...register("model")}
-              label="Modelo"
-              required
-              fullWidth
-            />
+            <FormControl fullWidth variant="outlined" error={!!errors.model}>
+              <TextField
+                {...register("model", {
+                  required: "Debe llenar el campo Modelo",
+                })}
+                error={!!errors.model}
+                label="Modelo"
+                type="text"
+                fullWidth
+              />
+              {isSubmitted && errors.model && (
+                <FormHelperText> {errors.model.message}</FormHelperText>
+              )}
+            </FormControl>
 
-            <FormControl sx={{ minWidth: 350 }}>
-              <InputLabel id="select-brand">Marca</InputLabel>
+            <FormControl fullWidth variant="outlined" error={!!errors.brand}>
+              <InputLabel id="brand-label">Marcas</InputLabel>
               <Select
-                {...register("brand")}
-                labelId="select-brand"
-                id="select-brand"
-                /*   value={age} */
-                required
-                label="Marca"
-                /*  onChange={handleChange} */
+                {...register("brand", {
+                  required: "Debe llenar el campo Marca",
+                })}
+                labelId="brand-label"
+                label="Marcas"
+                id="brand"
+                defaultValue="NONE" // Establecer el valor inicial a null
               >
-                <MenuItem value="">
+                <MenuItem value="NONE">
                   <em>None</em>
                 </MenuItem>
 
                 {_brands.map((b) => (
-                  <MenuItem value={b.id}>{b.names}</MenuItem>
+                  <MenuItem key={b.id} value={b.names}>
+                    {b.names}
+                  </MenuItem>
                 ))}
               </Select>
-              {/*    <FormHelperText>With label + helper text</FormHelperText> */}
+
+              {isSubmitted && errors.brand && (
+                <FormHelperText> {errors.brand.message}</FormHelperText>
+              )}
             </FormControl>
 
-            <TextField
-              {...register("price")}
-              label="Precio"
-              type="text"
-              required
-              fullWidth
-            />
+            <FormControl fullWidth variant="outlined" error={!!errors.price}>
+              <TextField
+                {...register("price", {
+                  required: "Debe llenar el campo Precio",
+                })}
+                error={!!errors.price}
+                label="Precio"
+                type="text"
+                fullWidth
+              />
+              {isSubmitted && errors.price && (
+                <FormHelperText> {errors.price.message}</FormHelperText>
+              )}
+            </FormControl>
           </Box>
 
           <Box
@@ -224,44 +289,72 @@ const ProductForm = () => {
               marginY: 2,
             }}
           >
-            <TextField
-              {...register("description")}
-              label="Descripción"
-              multiline
-              rows={4}
-              required
+            <FormControl
               fullWidth
-            />
-
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              variant="outlined"
+              error={!!errors.description}
+            >
               <TextField
-                {...register("rating")}
-                label="Calificación"
-                type="text"
-                required
-                fullWidth
+                {...register("description", {
+                  required: "Debe llenar el campo Description",
+                })}
+                error={!!errors.description}
+                label="Descripción"
+                multiline
+                rows={4}
               />
 
-              <FormControl sx={{ minWidth: 350 }}>
-                <InputLabel id="select-brand">Categorias</InputLabel>
-                <Select
-                  {...register("category")}
-                  labelId="select-brand"
-                  id="select-brand"
-                  label="Categoria"
-                  /*        value={nanana} */
+              {isSubmitted && errors.description && (
+                <FormHelperText> {errors.description.message}</FormHelperText>
+              )}
+            </FormControl>
 
-                  /*  onChange={handleChange} */
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <FormControl fullWidth variant="outlined" error={!!errors.rating}>
+                <TextField
+                  {...register("rating", {
+                    required: "Debe llenar el campo",
+                  })}
+                  error={!!errors.rating}
+                  label="Calificación"
+                  type="text"
+                  defaultValue="3"
+                />
+                {isSubmitted && errors.rating && (
+                  <FormHelperText> {errors.rating.message}</FormHelperText>
+                )}
+              </FormControl>
+
+              <FormControl
+                fullWidth
+                variant="outlined"
+                error={!!errors.categoryId}
+              >
+                <InputLabel id="category-label">Categorias</InputLabel>
+                <Select
+                  {...register("categoryId", {
+                    required: "complete el campo",
+                  })}
+                  labelId="category-label"
+                  label="Categoria"
+                  id="categoryId"
+                  defaultValue="NONE" // Establecer el valor inicial a null
                 >
-                  <MenuItem value="">
+                  {/* 
+                  <MenuItem value="NONE">
                     <em>None</em>
-                  </MenuItem>
+                  </MenuItem> */}
 
                   {_categories.map((c, index) => (
-                    <MenuItem value={c.id}>{c.names}</MenuItem>
+                    <MenuItem key={c.id} value={c.id}>
+                      {c.names}
+                    </MenuItem>
                   ))}
                 </Select>
-                {/*   <FormHelperText>With label + helper text</FormHelperText>  */}
+
+                {isSubmitted && errors.categoryId && (
+                  <FormHelperText> {errors.categoryId.message}</FormHelperText>
+                )}
               </FormControl>
             </Box>
           </Box>

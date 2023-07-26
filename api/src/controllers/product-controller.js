@@ -5,11 +5,15 @@ const Images = require("../models/Images");
 const { Op } = require("sequelize");
 const Category = require("../models/category");
 
-const createProduct = async (req, res) => {
+//inporto cloudinary
+const uploadCloudinary = require("../middlewares/cloudinary.js");
+const { deleteImageAfterUpload } = require("../middlewares/multer_config.js");
+
+const createProduct = async (req, res, next) => {
   try {
     let {
       name,
-      image,
+      //  image,
       brand,
       model,
       description,
@@ -17,7 +21,12 @@ const createProduct = async (req, res) => {
       rating,
       categoryId,
     } = req.body;
-    //console.log(req.body);
+
+    let file = req.file;
+
+    let upload = await uploadCloudinary(file);
+    //console.log(upload.secure_url);
+
     let newProduct = await Product.create({
       name,
       brand,
@@ -29,22 +38,30 @@ const createProduct = async (req, res) => {
     });
 
     const productId = newProduct.id;
-    //  console.log(productId);
-    //console.log(image);
+    //console.log(productId);
 
     // Crear la imagen
     let newImage = await Images.create({
-      url: image, // URL de la imagen que recibes en el body de la solicitud
+      url: upload.secure_url, // URL de la imagen que recibes en el body de la solicitud
       principal: true,
       productId, // Asocia la imagen con el producto mediante su ID
     });
-    //  console.log("imagen agregada", newImage);
+    // Eliminar la imagen del servidor local después de subirla y asociarla al producto
+    await deleteImageAfterUpload(req, res, () => {});
 
-    newProduct
-      ? res.status(200).send(newProduct)
+    const responseObj = {
+      product: newProduct,
+      image: newImage,
+    };
+
+    console.log(responseObj);
+    responseObj
+      ? res.json(responseObj)
       : res.status(404).json({ message: error.message });
+
+    // console.log(responseObj);
   } catch (error) {
-    return res.status(400).send({ message: error.message });
+    return res.status(400).json({ message: error.message });
   }
 };
 
@@ -133,7 +150,7 @@ const productById = async (req, res) => {
       },
     });
 
-    console.log(productById);
+    //console.log(productById);
     productById
       ? res.json(productById)
       : res.status(400).json("There are no product with that id in the db");

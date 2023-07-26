@@ -39,7 +39,7 @@ export default function FormBrand() {
 
     try {
       // Aquí puedes realizar las acciones que desees con los valores de las marcas
-      console.log(brands);
+      //console.log(brands);
       dispatch(AddBrand(brands)); // Llamar al middleware para agregar el producto
     } catch (error) {
       console.error(error.message);

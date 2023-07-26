@@ -22,7 +22,7 @@ export const AddBrand = (prop) => {
 
       // Puedes realizar acciones adicionales si es necesario
 
-      console.log(response.data);
+      //console.log(response.data);
 
       if (response.data) {
         alert("MARCAS AGREGADAS ");

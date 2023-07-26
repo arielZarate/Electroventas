@@ -9,11 +9,12 @@ const {
   restoreProduct,
 } = require("../controllers/product-controller");
 
+const { upload } = require("../middlewares/multer_config.js");
+
 router.get("/:id", productById); //trae por id
 //(router.get("/:name", getProduct); //trae por query o sea el name
 router.get("/", getProduct); //trae todos
-router.post("/", createProduct); //crea
-
+router.post("/", upload.single("image"), createProduct); //crea
 
 //agregados
 router.put("/restore/:id", restoreProduct); //actualiza

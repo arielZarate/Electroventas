@@ -65,7 +65,7 @@ Frecuencia máxima: 200 Hz
 
   //================================================================
 
-  const detail = useSelector((state) => state.products.detail);
+  const detail = useSelector((state) => state.productStore.detail);
 
   //console.log("detail: ", detail);
   const dispatch = useDispatch();
@@ -77,7 +77,7 @@ Frecuencia máxima: 200 Hz
 
   const { name, description, brand, Images, model, price, rating } = detail;
 
-  // console.log(name, description, brand, Images, model, price, rating);
+  //console.log(name, description, brand, Images, model, price, rating);
   // console.log(Images);
 
   /*   const handleImage = (image) => {

@@ -34,10 +34,14 @@ export const AddProduct = (form) => {
     try {
       // console.log(form);
 
+      /*   for (const entry of form.entries()) {
+        const [key, value] = entry;
+        console.log(key, value); // Imprime cada clave y valor en el FormData */
       dispatch(setLoadingProducts(true));
 
       const response = await axios.post(
-        `${Global.url_back_local}/products`,
+        // `${Global.url_back_local}/products/`,
+        " http://localhost:3000/api/products/",
         form
       ); // Llama a la función que agrega el producto en el servidor
 
@@ -121,9 +125,9 @@ export const getProductByID = (id) => {
       axios
         .get(`${Global.url_back_local}/products/${id}`)
         .then((response) => {
-          // console.log(response.data[0]);
+          //console.log(response.data[0]);
           dispatch(setProductID(response.data[0]));
-          // dispatch(setLoadingProducts(false));
+          dispatch(setLoadingProducts(false));
         })
         .catch((e) => {
           console.log(e);
