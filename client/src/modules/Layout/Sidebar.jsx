@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
-
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -20,13 +18,19 @@ import {
 } from "@mui/material";
 
 import muiBox from "@mui/material/Box";
+import { useDispatch, useSelector } from "react-redux";
+
+import { getBrands } from "../../redux/feactures/Thunks/brand";
+import { getCategories } from "../../redux/feactures/Thunks/category";
+import { getProductByCategory } from "../../redux/feactures/Thunks/products";
+
 /* 
 =============================SIDEBAR==============================================================
 
 */
 export default function Sidebar() {
   //========MARCAS==========
-  const allMarcas = [
+  /*   const allMarcas = [
     "Philips",
     "General Electric (GE)",
     "Osram",
@@ -35,20 +39,40 @@ export default function Sidebar() {
     "Legrand",
     "Eaton",
     "ABB",
-  ];
-  const [mostrarTodas, setMostrarTodas] = useState(false);
-  const [marcas, setMarcas] = useState(allMarcas.slice(0, 5));
+  ]; */
 
+  let dispatch = useDispatch();
+  let _brands = useSelector((state) => state.brandStore.brands);
+  //console.log(_brands);
+  const _categories = useSelector((state) => state.categoryStore.categories);
+  //console.log(_categories);
+
+  const [brandShow, setBrandShow] = useState([]);
+  const [viewMore, setViewMore] = useState(false);
+
+  //montar el componenente
+  useEffect(() => {
+    dispatch(getBrands());
+    dispatch(getCategories());
+  }, [dispatch]);
+
+  //===================HANDLER================================
   const handleClick = () => {
-    if (mostrarTodas) {
-      setMarcas(allMarcas.slice(0, 5));
-    } else {
-      setMarcas(allMarcas);
-    }
-    setMostrarTodas(!mostrarTodas);
-    //  console.log(`Has hecho clic en ${marca}`);
-    // Aquí puedes realizar la acción que desees para el elemento seleccionado
+    setViewMore(!viewMore);
   };
+
+  //===================HANDLER CATEGORY============================
+  const handlerClickCategory = (id) => {
+    //console.log(id);
+    dispatch(getProductByCategory(id));
+  };
+
+  useEffect(() => {
+    // Hacemos una comprobación para asegurarnos de que _brands no está vacío
+    if (_brands && _brands.length > 0) {
+      setBrandShow(viewMore ? _brands : _brands.slice(0, 4));
+    }
+  }, [_brands, viewMore]);
 
   //======PRECIOS============
 
@@ -65,8 +89,8 @@ export default function Sidebar() {
 
   return (
     <>
-      <Accordion sx={{ marginY: 5 }}>
-        <AccordionSummary
+      {/*   <Accordion sx={{ marginY: 5, marginLeft: 0 }}> */}
+      {/*   <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="category"
           id="panel1a-header"
@@ -74,44 +98,66 @@ export default function Sidebar() {
           <Typography variant="h6" component="h2" gutterBottom>
             Categoria
           </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <ListItemButton>Iluminacion</ListItemButton>
-          <ListItemButton>Electricidad</ListItemButton>
-          <ListItemButton>Cables</ListItemButton>
-        </AccordionDetails>
-      </Accordion>
+        </AccordionSummary> */}
 
-      <List component="nav" marginTop="2">
-        <Typography variant="h6" component="h2" gutterBottom marginLeft={2}>
-          Marca
+      <List sx={{ marginY: 3 }}>
+        <Typography
+          variant="h5"
+          component="h2"
+          gutterBottom
+          sx={{ marginLeft: 2, textDecoration: "underline" }}
+        >
+          Categoria
         </Typography>
-        {marcas.map((marca, index) => (
-          <ListItemButton key={index} onClick={() => handleClick(marca)}>
-            <ListItemText primary={marca} />
+        {/*  <AccordionDetails> */}
+        {_categories?.map((c) => (
+          <ListItemButton key={c.id} onClick={() => handlerClickCategory(c.id)}>
+            <ListItemText primary={c.names} />
           </ListItemButton>
         ))}
       </List>
 
-      <Box display="flex" justifyContent="flex-start" mt={1} ml={3}>
-        {!mostrarTodas ? (
-          <Link href="#" variant="body2" onClick={handleClick}>
-            Ver más
-          </Link>
-        ) : (
-          <Link href="#" variant="body2" onClick={handleClick}>
-            Ver menos
-          </Link>
-        )}
-      </Box>
+      {/*   <ListItemButton>Iluminacion</ListItemButton>
+          <ListItemButton>Electricidad</ListItemButton>
+          <ListItemButton>Cables</ListItemButton> */}
+      {/*  </AccordionDetails> */}
+      {/* </Accordion> */}
+      <List component="nav" sx={{ marginTop: 2 }}>
+        <Typography
+          variant="h5"
+          component="h2"
+          gutterBottom
+          sx={{ marginLeft: 2, textDecoration: "underline" }}
+        >
+          Marca
+        </Typography>
 
+        {brandShow &&
+          brandShow?.map((b) => (
+            <ListItemButton key={b.id}>
+              <ListItemText primary={b.names} />
+            </ListItemButton>
+          ))}
+      </List>
+      {
+        <Box display="flex" justifyContent="flex-start" mt={1} ml={3}>
+          <Link
+            variant="body2"
+            onClick={handleClick}
+            sx={{ cursor: "pointer" }}
+          >
+            {!viewMore ? "Ver menos" : "Ver más"}
+          </Link>
+        </Box>
+      }
       <Divider sx={{ marginY: 2 }} />
 
       <Box sx={{ marginTop: 5, marginLeft: 2 }}>
         <Typography
           variant="h6"
           component="h2"
-          /* gutterBottom */ marginBottom={0}
+          //gutterBottom
+          marginBottom={0}
         >
           Precio
         </Typography>

@@ -5,6 +5,7 @@ import {
   setProducts,
   setStatusOperation,
   setProductID,
+  setError,
 } from "../Slices/products";
 
 ///import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -17,11 +18,19 @@ export const getProducts = () => {
       dispatch(setLoadingProducts(true));
       //TODO: PETICION A LA API COMO PROMESA
       const response = await axios.get(`${Global.url_back_local}/products`);
-      //console.log("getProducts thunk get", response.data);
-      dispatch(setProducts(response.data));
-      dispatch(setLoadingProducts(false));
-      dispatch(setStatusOperation(true));
-      //return response;
+
+      if (response.data.length === 0) {
+        // console.log(response.data.length);
+        dispatch(setError("No hay datos disponibles"));
+      } else {
+        /*FIXME: ojo con el estado setError porque sino lo seteo cundo length >0 
+            no se actualiza el error y queda aun en no hay productos disponibles
+            */
+        dispatch(setError(""));
+        dispatch(setProducts(response.data));
+        dispatch(setLoadingProducts(false));
+        dispatch(setStatusOperation(true));
+      }
     } catch (error) {
       //TODO: PROMESA RESUELTA EN ERROR
       throw error;
@@ -32,16 +41,10 @@ export const getProducts = () => {
 export const AddProduct = (form) => {
   return async (dispatch) => {
     try {
-      // console.log(form);
-
-      /*   for (const entry of form.entries()) {
-        const [key, value] = entry;
-        console.log(key, value); // Imprime cada clave y valor en el FormData */
       dispatch(setLoadingProducts(true));
-
       const response = await axios.post(
         // `${Global.url_back_local}/products/`,
-        " http://localhost:3000/api/products/",
+        `${Global.url_back_local}/products/`,
         form
       ); // Llama a la función que agrega el producto en el servidor
 
@@ -52,70 +55,42 @@ export const AddProduct = (form) => {
         // console.log(response.data);
       }
 
-      //  dispatch(getProducts());
       dispatch(setLoadingProducts(false));
       dispatch(setProducts(response.data));
       dispatch(setStatusOperation(true));
-      return response.data; // Devuelve los datos del producto agregado si es necesario  */
+      // return response.data;
     } catch (error) {
-      throw error;
+      console.log(error.message);
     }
   };
 };
 
-/* export const createProduct = (form) => {
-  return async (dispatch) => {
-   // dispatch(setLoadingProducts(true));
-    return await axios({
-      url: `${Global.URL}/products`,
-      method: "POST",
-      body: form,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      data: form,
-    })
-      .then((response) => {
-        console.log(response);
-        dispatch(getProducts());
-        dispatch(setLoadingProducts(false));
-        dispatch(setCreateProduct(response.data.newProduct.id));
-        Toast.fire({
-          icon: "success",
-          text: "Producto agregado correctamente",
-        });
-      })
-      .catch((response) => {
-        console.log(response);
-        dispatch(setLoadingProducts(false));
-        Swal.fire({
-          icon: "error",
-          title: response.response.data.Message,
-        });
-      });
-  };
-}; */
+//FIXME: BUSCAR POR PRODUCTS
 
-//TODO: findById
-/* export const getProductById = (id) => {
-  return async (dispatch) => {
-    dispatch(setLoadingProducts(true));
+export const searchProductByName = (name) => {
+  // console.log(name);
+  return async function (dispatch) {
     try {
-      // console.log("id", id);
-      const response = await axios.get(
-        `${Global.url_back_local}/products/${id}`
+      //setear loading a true....
+      dispatch(setLoadingProducts(true));
+      //TODO: PETICION A LA API COMO PROMESA
+      var response = await axios.get(
+        `${Global.url_back_local}/products?name=${name}`
       );
 
-      console.log("ById", response.data);
-      await dispatch(setProductID(response.data));
-      await dispatch(setLoadingProducts(false));
-    } catch (error) {
-      console.error(error.message);
+      //console.log("thunk", response.data);
+      dispatch(setProducts(response.data));
       dispatch(setLoadingProducts(false));
+      dispatch(setStatusOperation(true));
+      //return response;
+    } catch (error) {
+      // alert("product not found 😕");
+      console.log(error - message);
     }
   };
 };
- */
+
+//TODO: findById
 
 export const getProductByID = (id) => {
   // console.log("id", id);
@@ -128,6 +103,42 @@ export const getProductByID = (id) => {
           //console.log(response.data[0]);
           dispatch(setProductID(response.data[0]));
           dispatch(setLoadingProducts(false));
+          dispatch(setStatusOperation(true));
+        })
+        .catch((e) => {
+          console.log(e);
+          dispatch(setLoadingProducts(false));
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+//TODO: PRODUCTSBYCATEGORY
+
+export const getProductByCategory = (id) => {
+  // console.log("id", id);
+  return async (dispatch) => {
+    try {
+      dispatch(setLoadingProducts(true));
+      axios
+        .get(`${Global.url_back_local}/productsBycategory/${id}`)
+        .then((response) => {
+          // console.log(response.data.length);
+          // console.log(response.data);
+
+          if (response.data.length === 0) {
+            // console.log(response.data.length);
+            dispatch(setError("No hay datos disponibles"));
+          } else {
+            /*FIXME: ojo con el estado setError porque sino lo seteo cundo length >0 
+            no se actualiza el error y queda aun en no hay productos disponibles*/
+            dispatch(setError(""));
+            dispatch(setProducts(response.data));
+            dispatch(setLoadingProducts(false));
+            dispatch(setStatusOperation(true));
+          }
         })
         .catch((e) => {
           console.log(e);

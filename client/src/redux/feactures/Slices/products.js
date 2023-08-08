@@ -3,18 +3,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 //import { AddProduct } from "../Thunks/products";
 
-const Status = {
-  PENDING: "PENDING",
-  FULFILLED: "FULFILLED",
-  REJECTED: "REJECTED",
-};
-
 const initialState = {
   products: null,
   tempProducts: null,
   detail: {},
   createProducts: null,
-  error: null,
+  error: "",
   statusOperation: false,
 
   isLoading: false,
@@ -31,6 +25,15 @@ export const productSlice = createSlice({
     setStatusOperation: (state, action) => {
       state.statusOperation = action.payload;
     },
+
+    setError: (state, action) => {
+      state.error = action.payload;
+      /*   return {
+        ...state.error,
+        error: action.payload,
+      }; */
+    },
+
     /*   
     //otra forma
     
@@ -43,14 +46,15 @@ export const productSlice = createSlice({
     }, */
     setProducts: (state, action) => {
       //return [...state.products, (products = action.payload)];
+      //state.products = action.payload;
+      //console.log(action.payload);
       state.products = action.payload;
-      //[...state.tempProducts, newProduct];
     },
 
     setProductID: (state, action) => {
       //console.log("slices", action.payload);
       //state.detail.push(action.payload);
-      // console.log("setProductId: ", action.payload);
+
       state.detail = action.payload;
     },
   },
@@ -74,6 +78,7 @@ export const {
   setLoadingProducts,
   setStatusOperation,
   setProductID,
+  setError,
 } = productSlice.actions;
 
 export default productSlice.reducer;

@@ -2,8 +2,8 @@
 
 ### correo
 
-- electroventasecommerce@gmail.com
+-electroventasariel@gmail.com
 
 ### password
 
-- Monito2047!
+- Monito2047

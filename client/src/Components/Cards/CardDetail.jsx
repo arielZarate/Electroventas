@@ -67,6 +67,13 @@ Frecuencia máxima: 200 Hz
 
   const detail = useSelector((state) => state.productStore.detail);
 
+  // Paso 1: Establecer el valor inicial en el estado "rating" (valor por defecto)
+  const [statusRating, setRating] = useState(0); // O cualquier otro valor por defecto que desees
+
+  // Paso 2: Crear función de manejo de cambio para actualizar la calificación
+  const handleRatingChange = (event, newRating) => {
+    setRating(newRating);
+  };
   //console.log("detail: ", detail);
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -79,10 +86,6 @@ Frecuencia máxima: 200 Hz
 
   //console.log(name, description, brand, Images, model, price, rating);
   // console.log(Images);
-
-  /*   const handleImage = (image) => {
-    setImage(image.url);
-  }; */
 
   const ImageContainer = styled("div")({
     /*     width: "100%", // Ancho deseado
@@ -104,39 +107,6 @@ Frecuencia máxima: 200 Hz
     // objectFit: "contain",
   });
 
-  //=====================================
-  const ThumbnailContainer = styled("div")({
-    position: "absolute",
-    top: "8px",
-    left: "8px",
-    display: "flex",
-    gap: "2px",
-  });
-
-  const Thumbnail = styled("img")({
-    width: "60px",
-    height: "60px",
-    objectFit: "cover",
-    borderRadius: "4px",
-    cursor: "pointer",
-    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-    "&:hover": {
-      transform: "scale(1.1)",
-    },
-  });
-
-  /*   const [originalImage, setOriginalImage] = useState(image);
-
-  const [selectedImage, setSelectedImage] = useState(image);
-
-  const handleThumbnailClick = (image) => {
-    setSelectedImage(image);
-  };
-
-  const handleImageOriginal = () => {
-    setSelectedImage(originalImage);
-  }; */
-
   return (
     <Box>
       <Container sx={{ marginTop: 20 }}>
@@ -146,9 +116,10 @@ Frecuencia máxima: 200 Hz
               <ImageContainer>
                 <Card>
                   {Images &&
-                    Images.map((itera) => {
+                    Images.map((itera, index) => {
                       return (
                         <CardMedia
+                          key={index} // Utilizamos el índice como clave única
                           component={Image}
                           //alt={`foto del ${name}`}
                           sx={{ height: 400 }}
@@ -157,18 +128,6 @@ Frecuencia máxima: 200 Hz
                         />
                       );
                     })}
-
-                  {/* 
-                  <ThumbnailContainer>
-                    {product.additionalImages.map((image, index) => (
-                      <Thumbnail
-                        key={index}
-                        src={image}
-                        alt={`Thumbnail ${index + 1}`}
-                        onClick={() => handleThumbnailClick(image)}
-                      />
-                    ))}
-                  </ThumbnailContainer> */}
                 </Card>
               </ImageContainer>
             </Grid>
@@ -214,13 +173,14 @@ Frecuencia máxima: 200 Hz
                   <Stack spacing={1}>
                     <Rating
                       name="half-rating-read"
-                      defaultValue={rating}
+                      value={statusRating} // Asignar el valor de la calificación desde el estado "rating"
+                      onChange={handleRatingChange} // Asignar la función de manejo de cambio
                       precision={0.5}
                       readOnly
                     />
                   </Stack>
                   <Typography variant="subtitle2" color="textSecondary">
-                    {product.averageRating} reviews
+                    {`115`} reviews
                   </Typography>
                 </CardContent>
 
@@ -255,7 +215,8 @@ Frecuencia máxima: 200 Hz
               </Card>
             </Grid>
 
-            <Grid xs={9} md={9}>
+            {/* table  */}
+            <Grid item xs={9} md={9}>
               <TableContainer sx={{ backgroundColor: "#e0e0e0" }}>
                 <Typography
                   variant="h5"
@@ -287,7 +248,7 @@ Frecuencia máxima: 200 Hz
               </TableContainer>
             </Grid>
             <Divider sx={{ marginY: "3rem" }} />
-            <Grid xs={11} md={11}>
+            <Grid item xs={11} md={11}>
               <Box
                 sx={{
                   backgroundColor: "#bdbdbd",

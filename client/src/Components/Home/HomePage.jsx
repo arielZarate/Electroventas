@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -12,10 +12,19 @@ import Sidebar from "../../modules/Layout/Sidebar";
 import SortBar from "../../modules/Layout/SortBar";
 import { useSelector, useDispatch } from "react-redux";
 import { getProducts } from "../../redux/feactures/Thunks/products";
-
+import Loading from "../Loading/Loading";
 function HomePage() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.productStore.products);
+  let error = useSelector((state) => state.productStore.error);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulación de la carga de datos (puedes reemplazar esto con una llamada a la API real)
+    setTimeout(() => {
+      setIsLoading(false); // Marcar como no cargando después de 1 segundo (por ejemplo)
+    }, 1000);
+  }, []);
 
   useEffect(() => {
     dispatch(getProducts());
@@ -23,52 +32,66 @@ function HomePage() {
 
   return (
     <>
-      {/*     <Box sx={{ flexGrow: 1, marginTop: 15 }}>
-        <Grid container spacing={2} sx={{ margin: 1 }}>
-          <Grid item xs={12}>
-            <Paper elevation={3}>
-           
-              <Box sx={{ height: 200, backgroundColor: "#ddd" }}>
-             
-              </Box>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Box> */}
+      <Box sx={{ marginTop: 15, minHeight: "150vh" }}>
+        <Carousel />
+        <Drawer
+          sidebar={
+            <Sidebar
+            // setFilter={(e) => {
+            //setFilter(e);
+            // }}
+            />
+          }
+          navbar={
+            <SortBar
+            // setSort={(e) => {
+            //setSort(e);
+            // }}
+            />
+          }
+        >
+          {/*         <div>Cargando...</div> */}
+          {/* <Box sx={{ m: 2 }}>
+            {isLoading ? (
+              <Loading />
+            ) : error ? (
+              <Typography variant="h6" color="error">
+                {error}
+              </Typography>
+            ) : (
+              <>
+                <Grid container spacing={2}>
+                  {products?.map((element, index) => (
+                    <Grid xs={12} sm={6} md={4} lg={3} key={index}>
+                      <CardProduct data={element} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </>
+            )}
+          </Box> */}
 
-      <Carousel />
-      <Drawer
-        sidebar={
-          <Sidebar
-          /*  setFilter={(e) => {
-              setFilter(e);
-            }} */
-          />
-        }
-        navbar={
-          <SortBar
-          /*  setSort={(e) => {
-              setSort(e);
-            }} */
-          />
-        }
-      >
-        {/* <div className="px-4 py-8 relative w-fit mx-auto sm:mx-0 sm:w-auto"> */}
-        {/* <Grid childHeight={260} childWidth={200}>
-            {productos.map((item, index) => {
-              return <CardProduct key={index} data={item} />;
-            })}
-          </Grid> */}
-
-        <Box sx={{ margin: 1 }}>
-          <Grid container spacing={2}>
-            {products?.map((element, index) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                <CardProduct key={index} data={element} />
+          <Box sx={{ m: 2 }}>
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <Grid container spacing={2}>
+                {error ? (
+                  <Typography variant="h6" color="error">
+                    {JSON.stringify(error)}
+                  </Typography>
+                ) : (
+                  products.map((element, index) => (
+                    <Grid xs={12} sm={6} md={4} lg={3} key={index}>
+                      <CardProduct data={element} />
+                    </Grid>
+                  ))
+                )}
               </Grid>
-            ))}
-          </Grid>
-        </Box>
+            )}
+          </Box>
+        </Drawer>
+
         {/*  <Pagination
             page={page}
             count={count}
@@ -77,7 +100,7 @@ function HomePage() {
             }}
           /> */}
         {/*  </div> */}
-      </Drawer>
+      </Box>
     </>
   );
 }

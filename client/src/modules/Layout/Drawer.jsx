@@ -40,13 +40,17 @@ export default function PersistentDrawerLeft({ sidebar, children }) {
           </IconButtonBox>
 
           <Link to="/formProduct">
-            <Button variant="contained">Nuevo Producto</Button>
+            <Button variant="contained" color="secondary">
+              Nuevo Producto
+            </Button>
           </Link>
           <Link to="/formBrand">
             <Button variant="contained">Nuevas Marcas</Button>
           </Link>
           <Link to="/formCategory">
-            <Button variant="contained">Nuevas Categorias</Button>
+            <Button variant="contained" color="secondary">
+              Nuevas Categorias
+            </Button>
           </Link>
         </Toolbar>
       </AppBar>

@@ -30,7 +30,6 @@ export default function CardProduct(props) {
     id,
   } = props.data;
 
-  // console.log("QUE LINDA SON LAS TETAS DE EIAAA ♥♥♥♥♥🚀🚀");
   return (
     <>
       <Card sx={{ height: "500px", display: "flex", flexDirection: "column" }}>

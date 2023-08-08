@@ -52,7 +52,7 @@ const ProductForm = () => {
 
   //============SELECTORES=================
   const _brands = useSelector((state) => state.brandStore.brands);
-  // console.log(_brands);
+  //console.log(_brands);
   const _categories = useSelector((state) => state.categoryStore.categories);
   //console.log(_categories);
 

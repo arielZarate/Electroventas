@@ -24,12 +24,17 @@ const createBrand = async (req, res) => {
       let names = [names];
     }
 
-    const newModels = await Brand.bulkCreate(
+    const newBrand = await Brand.bulkCreate(
       names.map((item) => ({ names: item.toUpperCase() })) //el toUpperCase es para que se convierta en mayuscula siempre
     );
 
-    if (newModels.length > 0) {
-      return res.status(200).send(newModels);
+    /*     const brand = await Brand.create({
+      names,
+    }); */
+
+    //if (newModels.length > 0) {
+    if (newBrand) {
+      return res.status(200).send(newBrand);
     } else {
       return res
         .status(404)

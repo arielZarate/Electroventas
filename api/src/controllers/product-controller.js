@@ -54,7 +54,7 @@ const createProduct = async (req, res, next) => {
       image: newImage,
     };
 
-    console.log(responseObj);
+    //console.log(responseObj);
     responseObj
       ? res.json(responseObj)
       : res.status(404).json({ message: error.message });
@@ -119,6 +119,13 @@ const getProduct = async (req, res) => {
       const searchByName = await Product.findAll({
         where: {
           name: { [Op.substring]: `${name}` }, // [Op.iLike]: '%hat'
+        },
+        include: {
+          model: Images,
+          // model: Category,
+          /*   as: "imagenes", */
+
+          attributes: ["id", "url"],
         },
       });
 
