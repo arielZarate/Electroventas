@@ -7,6 +7,7 @@ const Login = require("./login-routes");
 const Images = require("./images-routes");
 const Brand = require("./brand-routes");
 const Category = require("./category-routes");
+const PXB = require("./productsByBrand-routes");
 const PXC = require("./productsByCategory-routes");
 
 router.use("/products", Product);
@@ -15,7 +16,9 @@ router.use("/login", Login);
 router.use("/images", Images);
 router.use("/brand", Brand);
 router.use("/category", Category);
-//router.use("/productsbycategory", PXC);
+//TODO: routes de  filtros por marca y categoria
+
 router.use("/productsBycategory", PXC);
+router.use("/productsBybrand", PXB);
 
 module.exports = router;

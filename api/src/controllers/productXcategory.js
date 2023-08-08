@@ -16,7 +16,7 @@ async function getProductsByCategory(req, res) {
 
       include: {
         model: Images,
-        // attributes: ["id", "url"],
+        attributes: ["id", "url"],
       },
     });
 

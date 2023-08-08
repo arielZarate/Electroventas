@@ -6,6 +6,8 @@ import {
   setStatusOperation,
   setProductID,
   setError,
+  applyCategoryFilter,
+  applyBrandFilter,
 } from "../Slices/products";
 
 ///import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -118,12 +120,65 @@ export const getProductByID = (id) => {
 //TODO: PRODUCTSBYCATEGORY
 
 export const getProductByCategory = (id) => {
+  //console.log("id", id);
+  return async (dispatch) => {
+    try {
+      dispatch(setLoadingProducts(true));
+
+      //FIXME: podria en vez de usar este filtro , setear todo elliminando el filtro setFilter
+      let url;
+      if (id === "ALL") {
+        url = `${Global.url_back_local}/products`;
+      } else {
+        url = `${Global.url_back_local}/productsBycategory/${id}`;
+      }
+
+      axios
+        .get(url)
+        .then((response) => {
+          //console.log(response.data);
+          if (response.data.length === 0) {
+            // console.log(response.data.length);
+            dispatch(setError("No hay datos disponibles"));
+          } else {
+            //FIXME: ojo con el estado setError porque sino lo seteo cundo length >0
+            //no se actualiza el error y queda aun en no hay productos disponibles
+
+            // console.log(response.data);
+            dispatch(setError(""));
+
+            dispatch(applyCategoryFilter(response.data));
+            dispatch(setLoadingProducts(false));
+            dispatch(setStatusOperation(true));
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          dispatch(setLoadingProducts(false));
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+//TODO: PRODUCTSBYBRAND
+
+export const getProductByBrand = (name) => {
   // console.log("id", id);
   return async (dispatch) => {
     try {
       dispatch(setLoadingProducts(true));
+
+      let url;
+      if (name === "ALL") {
+        url = `${Global.url_back_local}/products`;
+      } else {
+        url = `${Global.url_back_local}/productsBybrand/${name}`;
+      }
+
       axios
-        .get(`${Global.url_back_local}/productsBycategory/${id}`)
+        .get(url)
+
         .then((response) => {
           // console.log(response.data.length);
           // console.log(response.data);
@@ -132,8 +187,8 @@ export const getProductByCategory = (id) => {
             // console.log(response.data.length);
             dispatch(setError("No hay datos disponibles"));
           } else {
-            /*FIXME: ojo con el estado setError porque sino lo seteo cundo length >0 
-            no se actualiza el error y queda aun en no hay productos disponibles*/
+            //FIXME: ojo con el estado setError porque sino lo seteo cundo length >0
+            ///no se actualiza el error y queda aun en no hay productos disponibles
             dispatch(setError(""));
             dispatch(setProducts(response.data));
             dispatch(setLoadingProducts(false));

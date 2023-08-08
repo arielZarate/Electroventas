@@ -51,38 +51,19 @@ function HomePage() {
           }
         >
           {/*         <div>Cargando...</div> */}
-          {/* <Box sx={{ m: 2 }}>
-            {isLoading ? (
-              <Loading />
-            ) : error ? (
-              <Typography variant="h6" color="error">
-                {error}
-              </Typography>
-            ) : (
-              <>
-                <Grid container spacing={2}>
-                  {products?.map((element, index) => (
-                    <Grid xs={12} sm={6} md={4} lg={3} key={index}>
-                      <CardProduct data={element} />
-                    </Grid>
-                  ))}
-                </Grid>
-              </>
-            )}
-          </Box> */}
 
-          <Box sx={{ m: 2 }}>
+          <Box sx={{ m: 0 }}>
             {isLoading ? (
               <Loading />
             ) : (
-              <Grid container spacing={2}>
+              <Grid container spacing={1}>
                 {error ? (
-                  <Typography variant="h6" color="error">
+                  <Typography variant="h5" color="error">
                     {JSON.stringify(error)}
                   </Typography>
                 ) : (
                   products.map((element, index) => (
-                    <Grid xs={12} sm={6} md={4} lg={3} key={index}>
+                    <Grid xs={12} sm={6} md={3} lg={4} xl={4} key={index}>
                       <CardProduct data={element} />
                     </Grid>
                   ))

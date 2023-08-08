@@ -39,8 +39,8 @@ export default function CardProduct(props) {
             sx={{
               // 16:9
               pt: "0%",
-              width: "200",
-              height: "250px",
+              width: "150",
+              height: "200px",
             }}
             image={Images[0].url}
             alt={name}

@@ -30,6 +30,7 @@ import { getProductByID } from "../../redux/feactures/Thunks/products";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useParams } from "react-router-dom";
+import category from "../../redux/feactures/Slices/category";
 
 const CardDetail = () => {
   //================================================================
@@ -227,11 +228,11 @@ Frecuencia máxima: 200 Hz
                 </Typography>
                 <Table>
                   <TableBody>
-                    {/*       {data.map((row, index) => ( 
-    
-                   ))}
-                               */}
-                    <TableRow /*  key={id} */>
+                    {/*   <TableRow>
+                      <TableCell>Categoria</TableCell>
+                      <TableCell>{category}</TableCell>
+                    </TableRow> */}
+                    <TableRow>
                       <TableCell>Modelo</TableCell>
                       <TableCell>{model}</TableCell>
                     </TableRow>

@@ -36,26 +36,41 @@ export const productSlice = createSlice({
 
     /*   
     //otra forma
-    
-    setProducts: (state, action) => {
-     // console.log(state, action);
-
-      const nuevoProducto = action.payload;
+     const nuevoProducto = action.payload;
       // state.products.push(nuevoProducto); //OJO ACA ESTA MODIFICANDO EL ESTADO NO SE RECOMIENDA
       return [...state.productos, nuevoProducto];
     }, */
     setProducts: (state, action) => {
       //return [...state.products, (products = action.payload)];
-      //state.products = action.payload;
-      //console.log(action.payload);
       state.products = action.payload;
     },
 
     setProductID: (state, action) => {
-      //console.log("slices", action.payload);
-      //state.detail.push(action.payload);
-
       state.detail = action.payload;
+    },
+
+    //======FILTROS==========
+    applyCategoryFilter: (state, action) => {
+      //TODO: El action.payload ya me trae del backend todo el filtro
+
+      state.tempProducts =
+        action.payload === "ALL" ? state.products : action.payload;
+
+      state.products = state.tempProducts;
+    },
+    applyBrandFilter: (state, action) => {
+      /*  const { brand } = action.payload;
+      state.tempProducts = state.products.filter(
+        (product) => product.brand === brand
+      ); */
+
+      state.tempProducts =
+        action.payload === "ALL" ? state.products : action.payload;
+
+      state.products = state.tempProducts;
+    },
+    resetFilters: (state) => {
+      state.tempProducts = state.products;
     },
   },
   /*  extraReducers: (builder) => {
@@ -79,6 +94,9 @@ export const {
   setStatusOperation,
   setProductID,
   setError,
+  resetFilters,
+  applyCategoryFilter,
+  applyBrandFilter,
 } = productSlice.actions;
 
 export default productSlice.reducer;

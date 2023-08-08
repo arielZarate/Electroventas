@@ -22,7 +22,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getBrands } from "../../redux/feactures/Thunks/brand";
 import { getCategories } from "../../redux/feactures/Thunks/category";
-import { getProductByCategory } from "../../redux/feactures/Thunks/products";
+import {
+  getProductByCategory,
+  getProductByBrand,
+} from "../../redux/feactures/Thunks/products";
 
 /* 
 =============================SIDEBAR==============================================================
@@ -65,6 +68,11 @@ export default function Sidebar() {
   const handlerClickCategory = (id) => {
     //console.log(id);
     dispatch(getProductByCategory(id));
+  };
+  //===================HANDLER BRAND============================
+  const handlerClickBrand = (name) => {
+    // console.log("brand", name);
+    dispatch(getProductByBrand(name));
   };
 
   useEffect(() => {
@@ -110,6 +118,11 @@ export default function Sidebar() {
           Categoria
         </Typography>
         {/*  <AccordionDetails> */}
+
+        <ListItemButton key="ALL" onClick={() => handlerClickCategory("ALL")}>
+          <ListItemText primary="TODAS" />
+        </ListItemButton>
+
         {_categories?.map((c) => (
           <ListItemButton key={c.id} onClick={() => handlerClickCategory(c.id)}>
             <ListItemText primary={c.names} />
@@ -117,9 +130,6 @@ export default function Sidebar() {
         ))}
       </List>
 
-      {/*   <ListItemButton>Iluminacion</ListItemButton>
-          <ListItemButton>Electricidad</ListItemButton>
-          <ListItemButton>Cables</ListItemButton> */}
       {/*  </AccordionDetails> */}
       {/* </Accordion> */}
       <List component="nav" sx={{ marginTop: 2 }}>
@@ -132,9 +142,16 @@ export default function Sidebar() {
           Marca
         </Typography>
 
+        <ListItemButton key="ALL" onClick={() => handlerClickBrand("ALL")}>
+          <ListItemText primary="TODAS" />
+        </ListItemButton>
+
         {brandShow &&
           brandShow?.map((b) => (
-            <ListItemButton key={b.id}>
+            <ListItemButton
+              key={b.id}
+              onClick={() => handlerClickBrand(b.names)}
+            >
               <ListItemText primary={b.names} />
             </ListItemButton>
           ))}
@@ -146,7 +163,7 @@ export default function Sidebar() {
             onClick={handleClick}
             sx={{ cursor: "pointer" }}
           >
-            {!viewMore ? "Ver menos" : "Ver más"}
+            {viewMore ? "Ver menos" : "Ver más"}
           </Link>
         </Box>
       }
