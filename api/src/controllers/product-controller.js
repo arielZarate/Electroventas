@@ -102,13 +102,16 @@ const getProduct = async (req, res) => {
           "price",
           "rating",
         ],
-        include: {
-          model: Images,
-          // model: Category,
-          /*   as: "imagenes", */
-
-          attributes: ["id", "url"],
-        },
+        include: [
+          {
+            model: Images,
+            attributes: ["id", "url"], // Atributos específicos de Images que deseas traer
+          },
+          {
+            model: Category,
+            attributes: ["id", "names"], // Atributos específicos de Category que deseas traer
+          },
+        ],
       });
 
       //console.log("get back", products[0]);
@@ -120,13 +123,16 @@ const getProduct = async (req, res) => {
         where: {
           name: { [Op.substring]: `${name}` }, // [Op.iLike]: '%hat'
         },
-        include: {
-          model: Images,
-          // model: Category,
-          /*   as: "imagenes", */
-
-          attributes: ["id", "url"],
-        },
+        include: [
+          {
+            model: Images,
+            attributes: ["id", "url"], // Atributos específicos de Images que deseas traer
+          },
+          {
+            model: Category,
+            attributes: ["id", "names"], // Atributos específicos de Category que deseas traer
+          },
+        ],
       });
 
       //opcion 2 otra forma de filtrar pero primero traigo todo de product

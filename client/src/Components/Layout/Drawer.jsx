@@ -1,16 +1,21 @@
 import * as React from "react";
 import { styled as styles } from "@mui/material/styles";
 import styled from "styled-components";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
+
+//dependencias material-ui
 import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import TuneIcon from "@mui/icons-material/Tune";
-import { Button, Container } from "@mui/material";
-import { Link } from "react-router-dom";
+import {
+  Button,
+  Container,
+  IconButton,
+  Toolbar,
+  Drawer,
+  Box,
+} from "@mui/material";
 
+import SortBar from "./SortBar";
 const drawerWidth = 250;
 
 export default function PersistentDrawerLeft({ sidebar, children }) {
@@ -39,19 +44,9 @@ export default function PersistentDrawerLeft({ sidebar, children }) {
             {open ? <TuneIcon /> : <MenuIcon />}
           </IconButtonBox>
 
-          <Link to="/formProduct">
-            <Button variant="contained" color="secondary">
-              Nuevo Producto
-            </Button>
-          </Link>
-          <Link to="/formBrand">
-            <Button variant="contained">Nuevas Marcas</Button>
-          </Link>
-          <Link to="/formCategory">
-            <Button variant="contained" color="secondary">
-              Nuevas Categorias
-            </Button>
-          </Link>
+          {/* sort bars componenent */}
+
+          <SortBar />
         </Toolbar>
       </AppBar>
       <Container maxWidth="xl">

@@ -55,10 +55,10 @@ const getCategories = async (req, res) => {
   try {
     let categoryFind = [];
     categoryFind = await Category.findAll({
-      include: {
+      /* include: {
         model: Product,
         attributes: ["id", "name", "brand", "model"],
-      },
+      }, */
     });
 
     categoryFind.length > 0

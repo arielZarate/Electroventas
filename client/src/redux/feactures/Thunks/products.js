@@ -1,5 +1,5 @@
 import Global from "../../../utils/Global_URL";
-import axios from "axios";
+import axios, { Axios } from "axios";
 import {
   setLoadingProducts,
   setProducts,
@@ -8,6 +8,7 @@ import {
   setError,
   applyCategoryFilter,
   applyBrandFilter,
+  applyPriceFilter,
 } from "../Slices/products";
 
 ///import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -29,6 +30,7 @@ export const getProducts = () => {
             no se actualiza el error y queda aun en no hay productos disponibles
             */
         dispatch(setError(""));
+        //console.log(response.data);
         dispatch(setProducts(response.data));
         dispatch(setLoadingProducts(false));
         dispatch(setStatusOperation(true));
@@ -119,43 +121,17 @@ export const getProductByID = (id) => {
 
 //TODO: PRODUCTSBYCATEGORY
 
-export const getProductByCategory = (id) => {
-  //console.log("id", id);
+export const getProductByCategory = (name) => {
+  //console.log("name catagory", name);
   return async (dispatch) => {
     try {
       dispatch(setLoadingProducts(true));
 
-      //FIXME: podria en vez de usar este filtro , setear todo elliminando el filtro setFilter
-      let url;
-      if (id === "ALL") {
-        url = `${Global.url_back_local}/products`;
-      } else {
-        url = `${Global.url_back_local}/productsBycategory/${id}`;
-      }
+      // dispatch(setError(""));
 
-      axios
-        .get(url)
-        .then((response) => {
-          //console.log(response.data);
-          if (response.data.length === 0) {
-            // console.log(response.data.length);
-            dispatch(setError("No hay datos disponibles"));
-          } else {
-            //FIXME: ojo con el estado setError porque sino lo seteo cundo length >0
-            //no se actualiza el error y queda aun en no hay productos disponibles
-
-            // console.log(response.data);
-            dispatch(setError(""));
-
-            dispatch(applyCategoryFilter(response.data));
-            dispatch(setLoadingProducts(false));
-            dispatch(setStatusOperation(true));
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-          dispatch(setLoadingProducts(false));
-        });
+      dispatch(applyCategoryFilter(name));
+      dispatch(setLoadingProducts(false));
+      dispatch(setStatusOperation(true));
     } catch (error) {
       console.log(error);
     }
@@ -164,43 +140,67 @@ export const getProductByCategory = (id) => {
 //TODO: PRODUCTSBYBRAND
 
 export const getProductByBrand = (name) => {
-  // console.log("id", id);
   return async (dispatch) => {
     try {
       dispatch(setLoadingProducts(true));
 
-      let url;
-      if (name === "ALL") {
-        url = `${Global.url_back_local}/products`;
-      } else {
-        url = `${Global.url_back_local}/productsBybrand/${name}`;
-      }
+      //dispatch(setError(""));
+      dispatch(applyBrandFilter(name));
+      // dispatch(setLoadingProducts(false));
 
-      axios
-        .get(url)
-
-        .then((response) => {
-          // console.log(response.data.length);
-          // console.log(response.data);
-
-          if (response.data.length === 0) {
+      /* if (response.data.length === 0) {
             // console.log(response.data.length);
             dispatch(setError("No hay datos disponibles"));
-          } else {
-            //FIXME: ojo con el estado setError porque sino lo seteo cundo length >0
-            ///no se actualiza el error y queda aun en no hay productos disponibles
-            dispatch(setError(""));
-            dispatch(setProducts(response.data));
-            dispatch(setLoadingProducts(false));
-            dispatch(setStatusOperation(true));
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-          dispatch(setLoadingProducts(false));
-        });
+          }  */
     } catch (error) {
+      //dispatch(setLoadingProducts(false));
       console.log(error);
     }
   };
 };
+
+//TODO: order by price
+export const orderByPrice = (order) => {
+  //console.log(order);
+  return async (dispatch) => {
+    try {
+      //  dispatch(setLoadingProducts(true));
+
+      dispatch(setError(""));
+      dispatch(applyPriceFilter(order));
+      //dispatch(setLoadingProducts(false));
+      dispatch(setStatusOperation(true));
+    } catch (error) {
+      console.log(error.message);
+      //dispatch(setLoadingProducts(false));
+      dispatch(setStatusOperation(false));
+    }
+  };
+};
+
+/* 
+
+export const applyCategoryAndBrandFilters = (category, brand) => {
+  return async (dispatch) => {
+    try {
+      dispatch(setLoadingProducts(true));
+
+      // Llamar a la acción applyCategoryAndBrandFilter con los valores de categoría y marca
+      dispatch(applyCategoryAndBrandFilter({ category, brand }));
+
+      dispatch(setLoadingProducts(false));
+      dispatch(setStatusOperation(true));
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+};
+*/
+
+/* 
+en el sidebar
+const handleFiltersApply = (selectedCategory, selectedBrand) => {
+  dispatch(applyCategoryAndBrandFilters(selectedCategory, selectedBrand));
+};
+
+*/

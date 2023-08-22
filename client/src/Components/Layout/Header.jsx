@@ -1,21 +1,25 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import MenuIcon from "@mui/icons-material/Menu";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Badge from "@mui/material/Badge";
-import TextField from "@mui/material/TextField";
+
+//dependencias de material
+import {
+  Badge,
+  Drawer,
+  Divider,
+  CssBaseline,
+  Box,
+  IconButton,
+  AppBar,
+  Button,
+  Typography,
+  Toolbar,
+  ListItemText,
+  ListItemButton,
+  ListItem,
+  List,
+} from "@mui/material/";
+
+// MenuIcon,
 
 import {
   AiFillHome,
@@ -23,6 +27,7 @@ import {
   AiOutlineMail,
 } from "react-icons/ai";
 import { FaBolt, FaUsers } from "react-icons/fa";
+import { AiOutlineMenu } from "react-icons/ai";
 import { ListItemIcon } from "@mui/material";
 
 //==============SearchBar================
@@ -31,8 +36,6 @@ import SearchBar from "./SearchBar";
 //==============================================================================
 //drawer
 const drawerWidth = 240;
-
-//==============================================================================
 
 const navItems = [
   {
@@ -56,15 +59,6 @@ const navItems = [
     icon: <FaUsers />,
   },
 ];
-
-/* ,const arrayNav2 = [
-  { name: "Instagram", path: "#", icon: <GroupAdd /> },
-
-{ name:'Iniciar sesion',
-  path: '/login',  
-  icon:  <Lock/>
-} 
-];*/
 
 //========================================================================================
 
@@ -113,7 +107,7 @@ function DrawerAppBar(props) {
               display: { sm: "none", md: "none" },
             }}
           >
-            <MenuIcon />
+            <AiOutlineMenu />
           </IconButton>
           <Typography
             variant="h6"
@@ -168,15 +162,15 @@ function DrawerAppBar(props) {
         <Box
           sx={{
             display: {
-              xs: "block", // Cambia esto a "block"
+              xs: "block",
               sm: "none",
             },
           }}
         >
           <SearchBar
             mobileStyles={{
-              backgroundColor: "#d6d6d6", // Cambiar el color de fondo en modo móvil
-              borderRadius: "0", // Quitar el borderRadius en modo móvil
+              backgroundColor: "#d6d6d6",
+              borderRadius: "0",
             }}
           />
         </Box>
@@ -196,12 +190,11 @@ function DrawerAppBar(props) {
 
       <Box component="nav">
         <Drawer
-          /*   container={container} */
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "block" },
@@ -219,10 +212,6 @@ function DrawerAppBar(props) {
 }
 
 DrawerAppBar.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   window: PropTypes.func,
 };
 

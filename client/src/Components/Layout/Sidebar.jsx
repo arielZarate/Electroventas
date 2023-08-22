@@ -65,9 +65,9 @@ export default function Sidebar() {
   };
 
   //===================HANDLER CATEGORY============================
-  const handlerClickCategory = (id) => {
+  const handlerClickCategory = (names) => {
     //console.log(id);
-    dispatch(getProductByCategory(id));
+    dispatch(getProductByCategory(names));
   };
   //===================HANDLER BRAND============================
   const handlerClickBrand = (name) => {
@@ -119,15 +119,19 @@ export default function Sidebar() {
         </Typography>
         {/*  <AccordionDetails> */}
 
-        <ListItemButton key="ALL" onClick={() => handlerClickCategory("ALL")}>
+        <ListItemButton onClick={() => handlerClickCategory("ALL")}>
           <ListItemText primary="TODAS" />
         </ListItemButton>
 
-        {_categories?.map((c) => (
-          <ListItemButton key={c.id} onClick={() => handlerClickCategory(c.id)}>
-            <ListItemText primary={c.names} />
-          </ListItemButton>
-        ))}
+        {_categories &&
+          _categories?.map((c) => (
+            <ListItemButton
+              key={c.id}
+              onClick={() => handlerClickCategory(c.names)}
+            >
+              <ListItemText primary={c.names} />
+            </ListItemButton>
+          ))}
       </List>
 
       {/*  </AccordionDetails> */}
@@ -142,7 +146,7 @@ export default function Sidebar() {
           Marca
         </Typography>
 
-        <ListItemButton key="ALL" onClick={() => handlerClickBrand("ALL")}>
+        <ListItemButton onClick={() => handlerClickBrand("ALL")}>
           <ListItemText primary="TODAS" />
         </ListItemButton>
 

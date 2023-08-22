@@ -4,15 +4,17 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import Drawer from "../../modules/Layout/Drawer";
-import Carousel from "../Carousel2";
-import CardProduct from "../Cards/CardProduct";
-//import { productos } from "../../utils/productos.json";
-import Sidebar from "../../modules/Layout/Sidebar";
-import SortBar from "../../modules/Layout/SortBar";
+import Carousel from "../../Components/Carousel2";
+import CardProduct from "../../Components/Cards/CardProduct";
+//layout
+import Drawer from "../../Components/Layout/Drawer";
+import Sidebar from "../../Components/Layout/Sidebar";
+
 import { useSelector, useDispatch } from "react-redux";
 import { getProducts } from "../../redux/feactures/Thunks/products";
-import Loading from "../Loading/Loading";
+import Loading from "../../Components/Loading/Loading";
+
+//HomePage
 function HomePage() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.productStore.products);
@@ -42,15 +44,12 @@ function HomePage() {
             // }}
             />
           }
-          navbar={
+          /*  navbar={
             <SortBar
-            // setSort={(e) => {
-            //setSort(e);
-            // }}
-            />
-          }
+           
+          } */
         >
-          {/*         <div>Cargando...</div> */}
+          {/*<div>Cargando...</div> */}
 
           <Box sx={{ m: 0 }}>
             {isLoading ? (

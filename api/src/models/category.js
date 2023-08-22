@@ -19,10 +19,6 @@ const Category = sequelize.define(
       unique: true,
       allowNull: false,
     },
-    /*    image: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    }, */
 
     /*   productId: {
       type: DataTypes.INTEGER,

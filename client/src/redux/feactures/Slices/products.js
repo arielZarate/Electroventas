@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import SortBar from "../../../Components/Layout/SortBar";
 //import { productos } from "../../../utils/productos.json";
 
 //import { AddProduct } from "../Thunks/products";
 
 const initialState = {
-  products: null,
-  tempProducts: null,
+  products: [],
+  tempProducts: [],
   detail: {},
   createProducts: null,
   error: "",
@@ -43,6 +44,7 @@ export const productSlice = createSlice({
     setProducts: (state, action) => {
       //return [...state.products, (products = action.payload)];
       state.products = action.payload;
+      state.tempProducts = action.payload;
     },
 
     setProductID: (state, action) => {
@@ -50,29 +52,142 @@ export const productSlice = createSlice({
     },
 
     //======FILTROS==========
-    applyCategoryFilter: (state, action) => {
-      //TODO: El action.payload ya me trae del backend todo el filtro
+    /*  applyCategoryFilter: (state, action) => {
+      console.log("slices", action.payload);
 
-      state.tempProducts =
-        action.payload === "ALL" ? state.products : action.payload;
+      let categoryFiltered = state.tempProducts.filter((p) => {
+        return p["Category"]["names"] === action.payload;
 
-      state.products = state.tempProducts;
+      });
+
+      state.products =
+        action.payload === "ALL" ? state.tempProducts : categoryFiltered;
     },
     applyBrandFilter: (state, action) => {
-      /*  const { brand } = action.payload;
-      state.tempProducts = state.products.filter(
-        (product) => product.brand === brand
-      ); */
+      console.log(action.payload);
 
-      state.tempProducts =
-        action.payload === "ALL" ? state.products : action.payload;
+      const filteredProducts = state.tempProducts.filter((p) => {
+        return p["brand"] === action.payload;
+      });
 
-      state.products = state.tempProducts;
+      state.products =
+        action.payload === "ALL" ? state.tempProducts : filteredProducts;
+    }, */
+
+    applyCategoryFilter: (state, action) => {
+      const filteredProducts =
+        action.payload === "ALL"
+          ? state.tempProducts
+          : state.tempProducts.filter(
+              (p) =>
+                p.Category.names.toLowerCase() === action.payload.toLowerCase()
+            );
+
+      return {
+        ...state,
+        products: filteredProducts,
+      };
+    },
+
+    applyBrandFilter: (state, action) => {
+      const filteredProducts =
+        action.payload === "ALL"
+          ? state.tempProducts
+          : state.tempProducts.filter(
+              (p) => p.brand.toLowerCase() === action.payload.toLowerCase()
+            );
+      //state.products = filteredProducts;
+
+      return {
+        ...state,
+        products: filteredProducts,
+      };
+    },
+    /* 
+
+//FILTRO COMBINADO DE CATEGORIA Y BRAND NO LO USE PERO QUEDO ACA 
+    applyCombinedFilter: (state, action) => {
+      const { category, brand } = action.payload;
+
+      const filteredProducts = state.tempProducts.filter(
+        (p) =>
+          (category === "ALL" ||
+            p.Category.names.toLowerCase() === category.toLowerCase()) &&
+          (brand === "ALL" || p.brand.toLowerCase() === brand.toLowerCase())
+      );
+
+      return {
+        ...state,
+        products: filteredProducts,
+      };
+    }, */
+
+    applyPriceFilter: (state, action) => {
+      // console.log(action.payload);
+      const sortOrden =
+        action.payload === "DOWN"
+          ? state.tempProducts.sort((a, b) => {
+              if (a.price < b.price) {
+                return -1;
+              }
+              if (a.price > b.price) {
+                return 1;
+              } else {
+                return 0;
+              }
+            })
+          : state.tempProducts.sort((a, b) => {
+              if (a.name < b.name) {
+                return 1;
+              }
+              if (a.name > b.name) {
+                return -1;
+              } else {
+                return 0;
+              }
+            });
+
+      state.products = sortOrden;
     },
     resetFilters: (state) => {
       state.tempProducts = state.products;
     },
   },
+
+  /* 
+applyCategoryAndBrandFilter: (state, action) => {
+  const { category, brand } = action.payload;
+
+  if (category === "ALL") {
+    // Si la categoría es "ALL", simplemente aplicamos el filtro por marca
+    const filteredProducts = brand === "ALL"
+      ? state.tempProducts
+      : state.tempProducts.filter(
+          p => p.brand.toLowerCase() === brand.toLowerCase()
+        );
+
+    return {
+      ...state,
+      products: filteredProducts,
+    };
+  } else {
+    // Si hay una categoría específica seleccionada, aplicamos ambos filtros
+    const filteredProducts = state.tempProducts.filter(
+      p =>
+        p.Category.names.toLowerCase() === category.toLowerCase() &&
+        (brand === "ALL" || p.brand.toLowerCase() === brand.toLowerCase())
+    );
+
+    return {
+      ...state,
+      products: filteredProducts,
+    };
+  }
+},
+
+
+*/
+
   /*  extraReducers: (builder) => {
     builder.addCase(AddProduct.pending, (state) => {
       state.status = "uploading";
@@ -97,6 +212,7 @@ export const {
   resetFilters,
   applyCategoryFilter,
   applyBrandFilter,
+  applyPriceFilter,
 } = productSlice.actions;
 
 export default productSlice.reducer;
