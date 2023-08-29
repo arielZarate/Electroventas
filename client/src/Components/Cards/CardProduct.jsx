@@ -9,14 +9,19 @@ import {
   Rating,
   Stack,
   IconButton,
+  CardHeader,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 
 import { Link } from "react-router-dom";
 
+//TODO: acounting
+import {
+  formatPriceARS,
+  formatPriceUSD,
+} from "../../helpers/Accounting/Accounting"; // Asegúrate de ajustar la ruta
+
 import { BsFillCartPlusFill } from "react-icons/bs";
-import { MdFavorite } from "react-icons/md";
-import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 
 export default function CardProduct(props) {
   const {
@@ -30,31 +35,67 @@ export default function CardProduct(props) {
     id,
   } = props.data;
 
+  const [statusRating, setRating] = useState(rating);
+
+  const handleRatingChange = (event, newRating) => {
+    setRating(newRating);
+  };
+
   return (
     <>
-      <Card sx={{ height: "500px", display: "flex", flexDirection: "column" }}>
+      <Card
+        sx={{
+          height: "500px",
+          display: "flex",
+          flexDirection: "column",
+          backgroundColor: "white",
+        }}
+      >
+        <CardHeader
+          action={
+            <Typography
+              variant="h6"
+              component="p"
+              color="textSecondary"
+              sx={{ marginRight: "10px" }}
+            >
+              {formatPriceARS(price)}
+            </Typography>
+          }
+          title={
+            <Typography
+              variant="h6"
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                flexGrow: 1,
+              }}
+            >
+              {name}
+            </Typography>
+          }
+          subheader="Stock disponible"
+        />
         <Link to={`/products/${id}`}>
           <CardMedia
             component="img"
             sx={{
-              // 16:9
               pt: "0%",
-              width: "150",
-              height: "200px",
+              width: "100%",
+              height: "220px", // Asegúrate de añadir 'px' al final
+              objectFit: "cover", // Esto ajusta la imagen manteniendo la relación de aspecto
             }}
             image={Images[0].url}
             alt={name}
           />
         </Link>
-        <CardContent sx={{ flexGrow: 1 }}>
-          <Typography gutterBottom variant="h5" component="h2">
-            {name}
+        <CardContent>
+          <Typography /* variant="body2" color="textSecondary" */ paragraph>
+            {description}
           </Typography>
-          {/*   <Typography>{model}</Typography> */}
-          <Typography variant="h4">${price}</Typography>
         </CardContent>
 
-        <Box
+        <CardActions
           sx={{
             display: "flex",
             justifyContent: "space-between",
@@ -62,21 +103,23 @@ export default function CardProduct(props) {
             margin: 1,
           }}
         >
-          <CardActions>
-            <Button size="large" variant="contained">
-              comprar
-            </Button>
-          </CardActions>
+          {/* <IconButton>
+              <MdFavorite />
+            </IconButton> */}
+          <IconButton aria-label="add to cart" onClick="evento al carro">
+            <BsFillCartPlusFill fontSize={30} />
+          </IconButton>
 
-          <Button
-            variant="contained"
-            size="medium"
-            startIcon={<MdFavorite />}
-            color="warning"
-          >
-            Favorito
-          </Button>
-        </Box>
+          <Stack spacing={2}>
+            <Rating
+              name="half-rating-read"
+              value={statusRating} // Asignar el valor de la calificación desde el estado "rating"
+              onChange={handleRatingChange} // Asignar la función de manejo de cambio
+              precision={0.5}
+              readOnly
+            />
+          </Stack>
+        </CardActions>
       </Card>
     </>
   );

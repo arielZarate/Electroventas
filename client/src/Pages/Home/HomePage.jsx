@@ -34,7 +34,9 @@ function HomePage() {
 
   return (
     <>
-      <Box sx={{ marginTop: 15, minHeight: "150vh" }}>
+      <Box
+        sx={{ marginTop: 15, minHeight: "150vh", backgroundColor: "#E0E0E0" }}
+      >
         <Carousel />
         <Drawer
           sidebar={
@@ -62,7 +64,7 @@ function HomePage() {
                   </Typography>
                 ) : (
                   products.map((element, index) => (
-                    <Grid xs={12} sm={6} md={3} lg={4} xl={4} key={index}>
+                    <Grid xs={12} sm={6} md={4} lg={4} xl={3} key={index}>
                       <CardProduct data={element} />
                     </Grid>
                   ))
