@@ -13,17 +13,10 @@ const StyledBox = styled(Box)({
 
 import img1 from "/src/assets/carrusel/carru1.jpg";
 import img2 from "/src/assets/carrusel/carru2.jpg";
-
 import img3 from "/src/assets/carrusel/carru3.jpg";
-
-const images = [
-  /*   "/src/assets/carrusel/carru1.jpg",
-  "/src/assets/carrusel/carru2.jpg",
-  "/src/assets/carrusel/carru3.jpg", */
-  img1,
-  img2,
-  img3,
-];
+import quienes_somos from "/src/assets/quienes_somos.jpg";
+import logo from "/src/assets/2.png";
+const images = [img1, img2, img3];
 
 function LandingForm() {
   return (
@@ -41,7 +34,7 @@ function LandingForm() {
       >
         {/*   <Typography variant="h6">Ferretería Online</Typography> */}
         <Box>
-          <img src="/src/assets/2.png" width="200vh" height="50vh" alt="logo" />
+          <img src={logo} width="200vh" height="50vh" alt="logo" />
         </Box>
 
         {/*        <Link to='/home'> */}
@@ -119,7 +112,7 @@ function LandingForm() {
           </Grid>
           <Grid item md={6}>
             <img
-              src="/src/assets/quienes_somos.jpg"
+              src={quienes_somos}
               alt="Equipo de nuestra empresa"
               width="500px"
             />
