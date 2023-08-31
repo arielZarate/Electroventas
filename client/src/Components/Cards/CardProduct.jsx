@@ -106,7 +106,7 @@ export default function CardProduct(props) {
           {/* <IconButton>
               <MdFavorite />
             </IconButton> */}
-          <IconButton aria-label="add to cart" onClick="evento al carro">
+          <IconButton aria-label="add to cart">
             <BsFillCartPlusFill fontSize={30} />
           </IconButton>
 

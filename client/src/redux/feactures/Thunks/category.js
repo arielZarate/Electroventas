@@ -15,7 +15,7 @@ export const AddCategory = (prop) => {
       dispatch(setLoadingCategory(true));
 
       // `${Global.url_back_local}/brand`
-      const response = await axios.post(`${Global.url_back_local}/category`, {
+      const response = await axios.post(`${Global.url}/category`, {
         names: prop,
       }); // Llama a la función que agrega el producto en el servidor
 
@@ -49,7 +49,7 @@ export const getCategories = () => {
       //  axios
       dispatch(setLoadingCategory(true));
       axios
-        .get(`${Global.url_back_local}/category/`)
+        .get(`${Global.url}/category/`)
         .then((response) => {
           // console.log(response.data);
           dispatch(getCategory(response.data));

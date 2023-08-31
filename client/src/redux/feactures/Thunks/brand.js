@@ -16,7 +16,7 @@ export const AddBrand = (prop) => {
       dispatch(setLoadingBrands(true));
 
       /*   `${Global.url_back_local}/brand` */
-      const response = await axios.post(`${Global.url_back_local}/brand`, {
+      const response = await axios.post(`${Global.url}/brand`, {
         names: prop,
       }); // Llama a la función que agrega el producto en el servidor
 
@@ -50,7 +50,7 @@ export const getBrands = () => {
       //  axios
       dispatch(setLoadingBrands(true));
       axios
-        .get(`${Global.url_back_local}/brand/`)
+        .get(`${Global.url}/brand/`)
         .then((response) => {
           //console.log(response.data);
           dispatch(getBrand(response.data));

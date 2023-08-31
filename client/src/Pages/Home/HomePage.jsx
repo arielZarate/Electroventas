@@ -53,21 +53,32 @@ function HomePage() {
         >
           {/*<div>Cargando...</div> */}
 
-          <Box sx={{ m: 0 }}>
+          <Box>
             {isLoading ? (
               <Loading />
             ) : (
-              <Grid container spacing={1}>
+              <Grid container spacing={1} sx={{ m: 1 }}>
                 {error ? (
                   <Typography variant="h5" color="error">
                     {JSON.stringify(error)}
                   </Typography>
                 ) : (
-                  products.map((element, index) => (
-                    <Grid xs={12} sm={6} md={4} lg={4} xl={3} key={index}>
-                      <CardProduct data={element} />
-                    </Grid>
-                  ))
+                  products.map(
+                    (element, index) => (
+                      <Grid
+                        xs={12}
+                        sm={6}
+                        md={4}
+                        lg={4}
+                        xl={3}
+                        key={element.id}
+                      >
+                        <CardProduct data={element} />
+                      </Grid>
+                    )
+
+                    /*  console.log(element.id) */
+                  )
                 )}
               </Grid>
             )}

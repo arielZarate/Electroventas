@@ -20,7 +20,7 @@ export const getProducts = () => {
       //setear loading a true....
       dispatch(setLoadingProducts(true));
       //TODO: PETICION A LA API COMO PROMESA
-      const response = await axios.get(`${Global.url_back_local}/products`);
+      const response = await axios.get(`${Global.url}/products`);
 
       if (response.data.length === 0) {
         // console.log(response.data.length);
@@ -48,7 +48,7 @@ export const AddProduct = (form) => {
       dispatch(setLoadingProducts(true));
       const response = await axios.post(
         // `${Global.url_back_local}/products/`,
-        `${Global.url_back_local}/products/`,
+        `${Global.url}/products/`,
         form
       ); // Llama a la función que agrega el producto en el servidor
 
@@ -78,9 +78,7 @@ export const searchProductByName = (name) => {
       //setear loading a true....
       dispatch(setLoadingProducts(true));
       //TODO: PETICION A LA API COMO PROMESA
-      var response = await axios.get(
-        `${Global.url_back_local}/products?name=${name}`
-      );
+      var response = await axios.get(`${Global.url}/products?name=${name}`);
 
       //console.log("thunk", response.data);
       dispatch(setProducts(response.data));
@@ -102,7 +100,7 @@ export const getProductByID = (id) => {
     try {
       dispatch(setLoadingProducts(true));
       axios
-        .get(`${Global.url_back_local}/products/${id}`)
+        .get(`${Global.url}/products/${id}`)
         .then((response) => {
           //console.log(response.data[0]);
           dispatch(setProductID(response.data[0]));
