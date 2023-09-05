@@ -131,38 +131,40 @@ export default function Footer() {
                     {/* aca hacemos una verificacion del item.path si tiene frame agrega el iframe sino normal */}
                     {item.path && item.path.frame ? (
                       <Box sx={{ display: "flex", flexDirection: "column" }}>
+                        <iframe
+                          title="Google Maps"
+                          src={item.path.frame}
+                          width="120%"
+                          height="100"
+                          style={{ borderRadius: "10px" }}
+                          allowFullScreen=""
+                          loading="lazy"
+                        />
                         <RouterLink
                           to={item.path.location}
                           component={Link}
                           target="blank"
                         >
-                          <ListItemButton>
-                            <ListItemIcon>
+                          <ListItemButton
+                            sx={{
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              width: "200%", // Ajusta el ancho según tus necesidades
+                            }}
+                          >
+                            <ListItemIcon sx={{ marginRight: -3 }}>
                               {item.icon && item.icon}
                             </ListItemIcon>
                             <ListItemText primary={item.text} />
                           </ListItemButton>
                         </RouterLink>
-                        <iframe
-                          title="Google Maps"
-                          src={item.path.frame}
-                          width="150%"
-                          height="100"
-                          style={{ border: "0" }}
-                          allowFullScreen=""
-                          loading="lazy"
-                        />
                       </Box>
                     ) : (
-                      <RouterLink
-                        to={item.path}
-                        component={Link}
-                        target="blank"
-                      >
+                      <RouterLink to={item.path} component={Link}>
                         <ListItemButton sx={{ padding: "3px" }}>
-                          <ListItemIcon sx={{ marginRight: -3 }}>
-                            {item.icon && item.icon}
-                          </ListItemIcon>
+                          <ListItemIcon>{item.icon && item.icon}</ListItemIcon>
                           <ListItemText primary={item.text} />
                         </ListItemButton>
                       </RouterLink>
