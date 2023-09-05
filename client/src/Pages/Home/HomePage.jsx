@@ -14,6 +14,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { getProducts } from "../../redux/feactures/Thunks/products";
 import Loading from "../../Components/Loading/Loading";
 
+const ContentWrapper = styled("div")({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  minHeight: "100vh", // Altura mínima para que el contenido se vea centrado
+  backgroundColor: "#E0E0E0",
+});
+
 //HomePage
 function HomePage() {
   const dispatch = useDispatch();
@@ -34,18 +43,14 @@ function HomePage() {
 
   return (
     <>
-      <Box
+      {/*   <Box
         sx={{ marginTop: 15, minHeight: "150vh", backgroundColor: "#E0E0E0" }}
-      >
+      > */}
+
+      <Container sx={{ padding: 0, backgroundColor: "#e3e1e1" }}>
         <Carousel />
         <Drawer
-          sidebar={
-            <Sidebar
-            // setFilter={(e) => {
-            //setFilter(e);
-            // }}
-            />
-          }
+          sidebar={<Sidebar />}
           /*  navbar={
             <SortBar
            
@@ -65,14 +70,7 @@ function HomePage() {
                 ) : (
                   products.map(
                     (element, index) => (
-                      <Grid
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        lg={4}
-                        xl={3}
-                        key={element.id}
-                      >
+                      <Grid xs={12} sm={6} md={4} lg={4} xl={3} key={index}>
                         <CardProduct data={element} />
                       </Grid>
                     )
@@ -93,7 +91,8 @@ function HomePage() {
             }}
           /> */}
         {/*  </div> */}
-      </Box>
+        {/*  </Box> */}
+      </Container>
     </>
   );
 }

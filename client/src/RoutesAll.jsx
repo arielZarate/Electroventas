@@ -9,6 +9,7 @@ import FormProduct from "./Components/Formulario/FormProduct";
 import CardDetail from "./Components/Cards/CardDetail";
 import FormBrand from "./Components/Formulario/FormBrand";
 import FormCategory from "./Components/Formulario/FormCategory";
+import Footer from "./Components/Layout/Footer";
 
 function RoutesAll() {
   const location = useLocation();
@@ -30,6 +31,8 @@ function RoutesAll() {
         <Route path="/formCategory" element={<FormCategory />} />
         <Route path="/products/:id" element={<CardDetail />} />
       </Router>
+
+      {!isLandingPage && <Footer />}
     </>
   );
 }

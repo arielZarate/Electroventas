@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 
 import SortBar from "./SortBar";
-const drawerWidth = 250;
+const drawerWidth = 200;
 
 export default function PersistentDrawerLeft({ sidebar, children }) {
   const [open, setOpen] = React.useState(false);

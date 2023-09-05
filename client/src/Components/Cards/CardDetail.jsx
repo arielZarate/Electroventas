@@ -73,36 +73,35 @@ const CardDetail = () => {
   }, [dispatch, id]);
 
   return (
-    <Box>
-      <Container sx={{ marginTop: 20 }}>
-        <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={6} md={6}>
-              <ImageContainer>
-                <Card>
-                  {Images &&
-                    Images.map((itera, index) => {
-                      return (
-                        <CardMedia
-                          key={index} // Utilizamos el índice como clave única
-                          component={Image}
-                          //alt={`foto del ${name}`}
-                          sx={{ height: 400 }}
-                          image={itera.url}
-                          /*   onClick={handleImage} */
-                        />
-                      );
-                    })}
-                </Card>
-              </ImageContainer>
-            </Grid>
-            <Grid item xs={4} md={4}>
-              <Card sx={{ maxHeight: "100%", height: "100%" }}>
-                <CardContent>
-                  <Typography variant="h4" component="h2">
-                    {name}
-                  </Typography>
-                  {/*    <Typography
+    <Container sx={{ marginTop: 20, backgroundColor: "#ebebeb" }}>
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={7}>
+            <ImageContainer>
+              <Card>
+                {Images &&
+                  Images.map((itera, index) => {
+                    return (
+                      <CardMedia
+                        key={index} // Utilizamos el índice como clave única
+                        component={Image}
+                        //alt={`foto del ${name}`}
+                        sx={{ height: 400 }}
+                        image={itera.url}
+                        /*   onClick={handleImage} */
+                      />
+                    );
+                  })}
+              </Card>
+            </ImageContainer>
+          </Grid>
+          <Grid item xs={11} md={4}>
+            <Card sx={{ maxHeight: "100%", height: "100%" }}>
+              <CardContent>
+                <Typography variant="h4" component="h2">
+                  {name}
+                </Typography>
+                {/*    <Typography
                     px
                     variant="subtitle2"
                     color="textSecondary"
@@ -112,104 +111,115 @@ const CardDetail = () => {
                     {`Codigo:  ${id}`}
                   </Typography> */}
 
-                  <Typography variant="subtitle2" component="p">
-                    {`  stock:  `}
-                    <Typography
-                      variant="subtitle2"
-                      component="span"
-                      sx={{
-                        color: "disponible" ? "#4caf50" : "#f44336",
-                      }}
-                    >
-                      {`disponible`}
-                    </Typography>
-                  </Typography>
+                <Typography variant="subtitle2">
+                  {`  stock:  `}
                   <Typography
-                    variant="h4"
-                    color="textSecondary"
-                    sx={{ marginY: 1 }}
+                    variant="subtitle2"
+                    component="span"
+                    sx={{
+                      color: "disponible" ? "#4caf50" : "#f44336",
+                    }}
                   >
-                    {formatPriceARS(price)}
+                    {`disponible`}
                   </Typography>
-
-                  <Stack spacing={1}>
-                    <Rating
-                      name="half-rating-read"
-                      value={statusRating} // Asignar el valor de la calificación desde el estado "rating"
-                      onChange={handleRatingChange} // Asignar la función de manejo de cambio
-                      precision={0.5}
-                      readOnly
-                    />
-                  </Stack>
-                  <Typography variant="subtitle2" color="textSecondary">
-                    {`115`} reviews
-                  </Typography>
-                </CardContent>
-
-                <CardActions
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 2,
-                    justifyContent: "center",
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<ShoppingCartIcon />}
-                    fullWidth
-                  >
-                    Comprar
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="success"
-                    startIcon={<WhatsAppIcon />}
-                    fullWidth
-                  >
-                    WhatsApp
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-
-            {/* table  */}
-            <Grid item xs={10} md={10}>
-              <TableContainer component={Paper} sx={{ backgroundColor: "" }}>
-                <Typography
-                  variant="h5"
-                  color="initial"
-                  sx={{ textAlign: "start", marginTop: "2rem" }}
-                >
-                  Caracteristicas Principales
                 </Typography>
-                <Table aria-aria-label="table-description">
-                  <TableBody>
-                    <TableRow sx={{ backgroundColor: "#f2f2f2" }}>
-                      <TableCell>Modelo</TableCell>
-                      <TableCell>{model}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Marca</TableCell>
-                      <TableCell>{brand}</TableCell>
-                    </TableRow>
-                    <TableRow sx={{ backgroundColor: "#f2f2f2" }}>
-                      <TableCell>Descripcion</TableCell>
-                      <TableCell>{description}</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Grid>
-            <Divider sx={{ marginY: "3rem", color: "black" }} />
-            <Grid item xs={11} md={11}>
-              <Comments />
-            </Grid>
+                <Typography
+                  variant="h4"
+                  color="textSecondary"
+                  sx={{ marginY: 1 }}
+                >
+                  {formatPriceARS(price)}
+                </Typography>
+
+                <Stack spacing={1}>
+                  <Rating
+                    name="half-rating-read"
+                    value={statusRating} // Asignar el valor de la calificación desde el estado "rating"
+                    onChange={handleRatingChange} // Asignar la función de manejo de cambio
+                    precision={0.5}
+                    readOnly
+                  />
+                </Stack>
+                <Typography variant="subtitle2" color="textSecondary">
+                  {`115`} reviews
+                </Typography>
+              </CardContent>
+
+              <CardActions
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 2,
+                  justifyContent: "center",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<ShoppingCartIcon />}
+                  fullWidth
+                >
+                  Comprar
+                </Button>
+                <Button
+                  variant="contained"
+                  color="success"
+                  startIcon={<WhatsAppIcon />}
+                  fullWidth
+                >
+                  WhatsApp
+                </Button>
+              </CardActions>
+            </Card>
           </Grid>
-        </Box>
-      </Container>
-    </Box>
+
+          {/* table  */}
+          <Grid item xs={12} md={10}>
+            <TableContainer component={Paper} sx={{ backgroundColor: "" }}>
+              <Typography
+                variant="h5"
+                color="initial"
+                sx={{ textAlign: "start", marginTop: "2rem" }}
+              >
+                Caracteristicas Principales
+              </Typography>
+              <Table aria-label="table-description">
+                <TableBody>
+                  <TableRow
+                    sx={
+                      {
+                        /* backgroundColor: "#f2f2f2" */
+                      }
+                    }
+                  >
+                    <TableCell>Modelo</TableCell>
+                    <TableCell>{model}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Marca</TableCell>
+                    <TableCell>{brand}</TableCell>
+                  </TableRow>
+                  <TableRow
+                    sx={
+                      {
+                        /* backgroundColor: "#f2f2f2" */
+                      }
+                    }
+                  >
+                    <TableCell>Descripcion</TableCell>
+                    <TableCell>{description}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+          <Divider sx={{ marginY: "3rem", color: "black" }} />
+          <Grid item xs={1} md={11}>
+            <Comments />
+          </Grid>
+        </Grid>
+      </Box>
+    </Container>
   );
 };
 
