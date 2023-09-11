@@ -108,7 +108,7 @@ export default function Sidebar() {
           </Typography>
         </AccordionSummary> */}
 
-      <List sx={{ marginY: 3 }}>
+      <List sx={{ marginY: 5, marginX: 0, backgroundColor: "white" }}>
         <Typography
           variant="h5"
           component="h2"
@@ -214,5 +214,6 @@ const ContainerRango = styled(muiBox)({
   display: "flex",
   flexDirection: "row",
   width: "90%",
+  height: "100%",
   gap: "3%",
 });

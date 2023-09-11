@@ -110,15 +110,16 @@ export default function Footer() {
     <>
       {/* Footer */}
       <Container
-        maxWidth="md"
+        maxWidth="xl"
         component="footer"
         sx={{
           borderTop: (theme) => `1px solid ${theme.palette.divider}`,
           mt: 8,
           py: [1, 2],
+          backgroundColor: "white",
         }}
       >
-        <Grid container spacing={4} justifyContent="space-evenly">
+        <Grid container spacing={2} justifyContent="space-evenly">
           {footers.map((footer) => (
             <Grid item xs={6} sm={3} key={footer.title}>
               <Typography variant="h6" color="text.primary" gutterBottom>
@@ -134,7 +135,7 @@ export default function Footer() {
                         <iframe
                           title="Google Maps"
                           src={item.path.frame}
-                          width="120%"
+                          width="100%"
                           height="100"
                           style={{ borderRadius: "10px" }}
                           allowFullScreen=""
@@ -151,7 +152,7 @@ export default function Footer() {
                               flexDirection: "row",
                               alignItems: "center",
                               justifyContent: "center",
-                              width: "200%", // Ajusta el ancho según tus necesidades
+                              width: "120%", // Ajusta el ancho según tus necesidades
                             }}
                           >
                             <ListItemIcon sx={{ marginRight: -3 }}>

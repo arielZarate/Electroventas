@@ -14,15 +14,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { getProducts } from "../../redux/feactures/Thunks/products";
 import Loading from "../../Components/Loading/Loading";
 
-const ContentWrapper = styled("div")({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  minHeight: "100vh", // Altura mínima para que el contenido se vea centrado
-  backgroundColor: "#E0E0E0",
-});
-
 //HomePage
 function HomePage() {
   const dispatch = useDispatch();
@@ -43,58 +34,64 @@ function HomePage() {
 
   return (
     <>
-      {/*   <Box
-        sx={{ marginTop: 15, minHeight: "150vh", backgroundColor: "#E0E0E0" }}
-      > */}
+      {/*  <Carousel /> */}
 
-      <Container sx={{ padding: 0, backgroundColor: "#e3e1e1" }}>
-        <Carousel />
-        <Drawer
-          sidebar={<Sidebar />}
-          /*  navbar={
-            <SortBar
-           
-          } */
-        >
-          {/*<div>Cargando...</div> */}
-
-          <Box>
-            {isLoading ? (
-              <Loading />
-            ) : (
-              <Grid container spacing={1} sx={{ m: 1 }}>
-                {error ? (
-                  <Typography variant="h5" color="error">
-                    {JSON.stringify(error)}
-                  </Typography>
-                ) : (
-                  products.map(
-                    (element, index) => (
-                      <Grid xs={12} sm={6} md={4} lg={4} xl={3} key={index}>
-                        <CardProduct data={element} />
-                      </Grid>
-                    )
-
-                    /*  console.log(element.id) */
-                  )
-                )}
-              </Grid>
-            )}
-          </Box>
+      <ContentWrapper
+        sx={{
+          marginX: 1,
+        }}
+      >
+        <Drawer sidebar={<Sidebar />}>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <Grid
+              container
+              columnSpacing={2}
+              rowSpacing={1}
+              sx={{ marginTop: 2, marginX: 1 }}
+            >
+              {error ? (
+                <Typography variant="h5" color="error">
+                  {JSON.stringify(error)}
+                </Typography>
+              ) : (
+                products.map((element, index) => (
+                  <Grid xs={12} sm={6} md={4} lg={4} xl={3} key={index}>
+                    <CardProduct data={element} />
+                  </Grid>
+                ))
+              )}
+            </Grid>
+          )}
         </Drawer>
+      </ContentWrapper>
 
-        {/*  <Pagination
+      {/*  </Grid> */}
+
+      {/*  <Pagination
             page={page}
             count={count}
             setPage={(n) => {
               setPage(n);
             }}
           /> */}
-        {/*  </div> */}
-        {/*  </Box> */}
-      </Container>
+      {/*  </CenteredGrid> */}
+      {/*  </Box> */}
     </>
   );
 }
+
+/* NOTA STYLED DE MUI ES COMO EL DE STYLED COMPONENT 😎 */
+const ContentWrapper = styled(Box)({
+  marginX: 10,
+  display: "flex",
+  flexDirection: "column",
+  //alignItems: "center",
+
+  // justifyContent: "center",
+  minHeight: "100vh", // Altura mínima para que el contenido se vea centrado
+  // backgroundColor: "#E0E0E0",
+});
 
 export default HomePage;

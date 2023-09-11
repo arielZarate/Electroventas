@@ -16,6 +16,7 @@ import img2 from "/src/assets/carrusel/carru2.jpg";
 import img3 from "/src/assets/carrusel/carru3.jpg";
 import quienes_somos from "/src/assets/quienes_somos.jpg";
 import logo from "/src/assets/2.png";
+import Footer from "../Layout/Footer";
 const images = [img1, img2, img3];
 
 function LandingForm() {
@@ -168,31 +169,6 @@ function LandingForm() {
           <ShoppingCartIcon />
         </IconButton>
       </Box> */}
-
-      <Box
-        sx={{
-          bottom: 0,
-          left: 0,
-          width: "100%",
-          height: "200px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          backgroundColor: "#212121",
-          color: "white",
-          padding: "16px 24px",
-        }}
-      >
-        <Typography variant="h5">Ferretería Online</Typography>
-        <IconButton sx={{ color: "white" }}>
-          <ShoppingCartIcon />
-        </IconButton>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <IconButton sx={{ m: 2, color: "white" }}>Facebook</IconButton>
-          <IconButton sx={{ m: 2, color: "white" }}>Twiteer</IconButton>
-          <IconButton sx={{ m: 2, color: "white" }}>Instagram</IconButton>
-        </Box>
-      </Box>
     </StyledBox>
   );
 }

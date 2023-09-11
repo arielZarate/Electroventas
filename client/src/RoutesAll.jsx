@@ -32,7 +32,9 @@ function RoutesAll() {
         <Route path="/products/:id" element={<CardDetail />} />
       </Router>
 
-      {!isLandingPage && <Footer />}
+      {/*  {!isLandingPage && <Footer />} */}
+
+      {/*      <Footer /> */}
     </>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, Box, IconButton, Typography } from "@mui/material";
+import { Button, Box, IconButton, Typography, Container } from "@mui/material";
 import { useDispatch } from "react-redux";
 //iconos
 import { FaSortAlphaDown, FaSortAlphaUp } from "react-icons/fa"; //orden alfabetico
@@ -20,24 +20,24 @@ export default function SortBar() {
 
   return (
     <>
-      <Link to="/formProduct">
-        <Button variant="contained" color="secondary">
-          Nuevo Producto
-        </Button>
-      </Link>
-      <Link to="/formBrand">
-        <Button variant="contained">Nuevas Marcas</Button>
-      </Link>
-      <Link to="/formCategory">
-        <Button variant="contained" color="secondary">
-          Nuevas Categorias
-        </Button>
-      </Link>
+      <Box>
+        <Link to="/formProduct">
+          <Button variant="contained" color="secondary">
+            Nuevo Producto
+          </Button>
+        </Link>
+        <Link to="/formBrand">
+          <Button variant="contained">Nuevas Marcas</Button>
+        </Link>
+        <Link to="/formCategory">
+          <Button variant="contained" color="secondary">
+            Nuevas Categorias
+          </Button>
+        </Link>
 
-      {/* ordnear por name */}
+        {/* ordnear por name */}
 
-      <Box sx={{ marginX: 1 }}>
-        <Typography variant="subtitle" color="initial">
+        <Typography variant="subtitle" color="initial" sx={{ marginLeft: 1 }}>
           precio
         </Typography>
         <IconButton onClick={() => handlerClickPrecio("UP")}>
