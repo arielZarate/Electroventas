@@ -20,6 +20,7 @@ function HomePage() {
   const products = useSelector((state) => state.productStore.products);
   let error = useSelector((state) => state.productStore.error);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
     // Simulación de la carga de datos (puedes reemplazar esto con una llamada a la API real)
@@ -41,7 +42,7 @@ function HomePage() {
           marginX: 1,
         }}
       >
-        <Drawer sidebar={<Sidebar />}>
+        <Drawer isOpen={isDrawerOpen} sidebar={<Sidebar />}>
           {isLoading ? (
             <Loading />
           ) : (

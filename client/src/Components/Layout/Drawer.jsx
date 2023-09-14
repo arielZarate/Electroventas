@@ -15,6 +15,7 @@ import {
   Box,
   Grid,
 } from "@mui/material";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 
 import SortBar from "./SortBar";
 import Footer from "./Footer";
@@ -27,44 +28,94 @@ export default function DrawerLeft({ sidebar, children }) {
     setOpen(!open);
   };
 
+  const handleCloseDrawer = () => {
+    setOpen(false);
+  };
+
   return (
-    <Box
-      sx={{
-        marginTop: 20,
-        padding: 0,
-      }}
-    >
-      <AppBar
-        elevation={3}
-        position="relative"
-        sx={{
-          height: 50,
-          background: "white",
-          zIndex: 2,
-          //marginLeft: -10,
-          //marginRight: 20,
-        }}
-      >
-        <Toolbar>
-          <IconButtonBox
-            onClick={handleDrawerOpen}
-            edge="start"
+    <>
+      {/*   <ClickAwayListener onClickAway={handleCloseDrawer}>
+        <Box
+          sx={{
+            marginTop: 20,
+            padding: 0,
+           // display: "flex", // Añadido
+          }}
+        >
+          <Drawer
+            position="fixed"
             sx={{
-              color: "grey",
-              marginLeft: `${open ? drawerWidth - 40 : 0}px`,
+              overflowX: "none",
+              "& .MuiDrawer-paper": {
+                position: "absolute",
+                top: "auto",
+                width: drawerWidth,
+                boxSizing: "border-box",
+                background: "transparent",
+                transition: "all .4s ease-in-out!important",
+                overflowX: "none!important",
+                zIndex: "0!important",
+                border: "none",
+              },
+            }}
+            variant="persistent"
+            anchor="left"
+            open={open}
+          >
+            <Container>
+              {React.cloneElement(sidebar, { handleCloseDrawer })}
+            </Container>
+          </Drawer>
+
+          <Box
+            style={{ marginLeft: open ? drawerWidth : 0, flex: 1 }} // Añadido
+          >
+            <AppBar
+              elevation={3}
+              position="relative"
+              sx={{
+                height: 50,
+                background: "white",
+                zIndex: 2,
+                //marginLeft: -10,
+                //marginRight: 20,
+              }}
+            >
+              <Toolbar>
+                <IconButton
+                  onClick={handleDrawerOpen}
+                  edge="start"
+                  sx={{
+                    color: "grey",
+                    marginLeft: `${open ? drawerWidth - 40 : 0}px`,
+                  }}
+                >
+                  {open ? <TuneIcon /> : <MenuIcon />}
+                </IconButton>
+
+                <SortBar />
+              </Toolbar>
+            </AppBar>
+          </Box>
+
+          <Main
+            style={{
+              // marginLeft: open ? drawerWidth : 0
+              background: "transparent",
             }}
           >
-            {open ? <TuneIcon /> : <MenuIcon />}
-          </IconButtonBox>
-
-          {/* sort bars componenent */}
-
-          <SortBar />
-        </Toolbar>
-      </AppBar>
-
-      {/* podria ser container  */}
-      <Box>
+            {children}
+            <Footer />
+          </Main>
+        </Box>
+      </ClickAwayListener> */}
+      <Box
+        sx={{
+          marginTop: 20,
+          padding: 0,
+          display: "flex", // Añadido
+        }}
+      >
         <Drawer
           position="fixed"
           sx={{
@@ -85,15 +136,50 @@ export default function DrawerLeft({ sidebar, children }) {
           anchor="left"
           open={open}
         >
-          <Container>{sidebar}</Container>
+          {React.cloneElement(sidebar, { handleCloseDrawer })}
         </Drawer>
 
-        <Main style={{ marginLeft: open ? drawerWidth : 0 }}>
-          {children}
-          <Footer />
-        </Main>
+        <Box
+          style={{ marginLeft: open ? drawerWidth : 0, flex: 1 }} // Añadido
+        >
+          <AppBar
+            elevation={3}
+            position="relative"
+            sx={{
+              height: 50,
+              background: "white",
+              zIndex: 2,
+              display: "flex", // Añadido
+              justifyContent: "space-between", // Añadido
+            }}
+          >
+            <Toolbar>
+              <IconButtonBox
+                onClick={handleDrawerOpen}
+                edge="start"
+                sx={{
+                  color: "grey",
+                }}
+              >
+                {open ? <TuneIcon /> : <MenuIcon />}
+              </IconButtonBox>
+
+              <SortBar />
+            </Toolbar>
+          </AppBar>
+
+          <Main
+            style={{
+              marginLeft: open ? 5 : 0,
+              background: "transparent",
+            }}
+          >
+            {children}
+            <Footer />
+          </Main>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }
 const Main = styled.div`

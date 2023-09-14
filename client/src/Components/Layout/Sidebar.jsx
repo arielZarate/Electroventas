@@ -31,7 +31,7 @@ import {
 =============================SIDEBAR==============================================================
 
 */
-export default function Sidebar() {
+export default function Sidebar({ handleCloseDrawer }) {
   //========MARCAS==========
   /*   const allMarcas = [
     "Philips",
@@ -68,11 +68,13 @@ export default function Sidebar() {
   const handlerClickCategory = (names) => {
     //console.log(id);
     dispatch(getProductByCategory(names));
+    handleCloseDrawer(); // Cierra el drawer después de hacer clic
   };
   //===================HANDLER BRAND============================
   const handlerClickBrand = (name) => {
     // console.log("brand", name);
     dispatch(getProductByBrand(name));
+    handleCloseDrawer(); // Cierra el drawer después de hacer clic
   };
 
   useEffect(() => {
