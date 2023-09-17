@@ -114,8 +114,8 @@ export default function Footer() {
         component="footer"
         sx={{
           borderTop: (theme) => `1px solid ${theme.palette.divider}`,
-          mt: 8,
-          py: [1, 2],
+          mt: 50,
+          py: [1, 8],
           backgroundColor: "white",
         }}
       >

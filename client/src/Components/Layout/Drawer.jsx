@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { styled as styles } from "@mui/material/styles";
 import styled from "styled-components";
 
@@ -15,7 +15,6 @@ import {
   Box,
   Grid,
 } from "@mui/material";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
 
 import SortBar from "./SortBar";
 import Footer from "./Footer";
@@ -32,84 +31,24 @@ export default function DrawerLeft({ sidebar, children }) {
     setOpen(false);
   };
 
+  //drawer y footer
+
+  useEffect(() => {
+    const handleResize = () => {
+      setOpen(false);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <>
-      {/*   <ClickAwayListener onClickAway={handleCloseDrawer}>
-        <Box
-          sx={{
-            marginTop: 20,
-            padding: 0,
-           // display: "flex", // Añadido
-          }}
-        >
-          <Drawer
-            position="fixed"
-            sx={{
-              overflowX: "none",
-              "& .MuiDrawer-paper": {
-                position: "absolute",
-                top: "auto",
-                width: drawerWidth,
-                boxSizing: "border-box",
-                background: "transparent",
-                transition: "all .4s ease-in-out!important",
-                overflowX: "none!important",
-                zIndex: "0!important",
-                border: "none",
-              },
-            }}
-            variant="persistent"
-            anchor="left"
-            open={open}
-          >
-            <Container>
-              {React.cloneElement(sidebar, { handleCloseDrawer })}
-            </Container>
-          </Drawer>
-
-          <Box
-            style={{ marginLeft: open ? drawerWidth : 0, flex: 1 }} // Añadido
-          >
-            <AppBar
-              elevation={3}
-              position="relative"
-              sx={{
-                height: 50,
-                background: "white",
-                zIndex: 2,
-                //marginLeft: -10,
-                //marginRight: 20,
-              }}
-            >
-              <Toolbar>
-                <IconButton
-                  onClick={handleDrawerOpen}
-                  edge="start"
-                  sx={{
-                    color: "grey",
-                    marginLeft: `${open ? drawerWidth - 40 : 0}px`,
-                  }}
-                >
-                  {open ? <TuneIcon /> : <MenuIcon />}
-                </IconButton>
-
-                <SortBar />
-              </Toolbar>
-            </AppBar>
-          </Box>
-
-          <Main
-            style={{
-              // marginLeft: open ? drawerWidth : 0
-              background: "transparent",
-            }}
-          >
-            {children}
-            <Footer />
-          </Main>
-        </Box>
-      </ClickAwayListener> */}
-      <Box
+      <Grid
+        container
         sx={{
           marginTop: 20,
           padding: 0,
@@ -120,13 +59,14 @@ export default function DrawerLeft({ sidebar, children }) {
           position="fixed"
           sx={{
             overflowX: "none",
+
             "& .MuiDrawer-paper": {
               position: "absolute",
               top: "auto",
               width: drawerWidth,
               boxSizing: "border-box",
               background: "transparent",
-              transition: "all .4s ease-in-out!important",
+              transition: "all 1s ease-in-out!important",
               overflowX: "none!important",
               zIndex: "0!important",
               border: "none",
@@ -139,8 +79,16 @@ export default function DrawerLeft({ sidebar, children }) {
           {React.cloneElement(sidebar, { handleCloseDrawer })}
         </Drawer>
 
-        <Box
-          style={{ marginLeft: open ? drawerWidth : 0, flex: 1 }} // Añadido
+        <Grid
+          item
+          xs={12}
+          style={{
+            marginLeft: open ? drawerWidth : 0,
+            flex: 1,
+            transition: "margin-left 1s ease-in-out",
+            zIndex: 1,
+            position: "relative",
+          }}
         >
           <AppBar
             elevation={3}
@@ -175,10 +123,19 @@ export default function DrawerLeft({ sidebar, children }) {
             }}
           >
             {children}
-            <Footer />
           </Main>
-        </Box>
-      </Box>
+        </Grid>
+
+        <Footer
+        /*   sx={{
+            position: "relative",
+            width: open ? `calc(100% - ${drawerWidth}px)` : "100%",
+            top: open ? drawerWidth + "30%" : 0, // Ajusta el valor de 50 según sea necesario
+            left: open ? drawerWidth : 0,
+            //marginTop: open ? `calc(${drawerWidth}px + 500px)` : "0",
+          }} */
+        />
+      </Grid>
     </>
   );
 }
@@ -192,6 +149,7 @@ const IconButtonBox = styles(IconButton)`
 transition: all .4s ease-in-out!important;
 margin-right:10px
 `;
+
 const AppBar = styles(MuiAppBar)`
 display: flex;
 justify-content: center;

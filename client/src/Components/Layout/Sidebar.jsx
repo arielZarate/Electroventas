@@ -175,7 +175,7 @@ export default function Sidebar({ handleCloseDrawer }) {
       }
       <Divider sx={{ marginY: 2 }} />
 
-      <Box sx={{ marginTop: 5, marginLeft: 2 }}>
+      <Box sx={{ marginTop: 5, marginLeft: 2, marginBottom: 5 }}>
         <Typography
           variant="h6"
           component="h2"
