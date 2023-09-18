@@ -126,15 +126,15 @@ export default function DrawerLeft({ sidebar, children }) {
           </Main>
         </Grid>
 
-        <Footer
-        /*   sx={{
+        {/*  <Footer
+          sx={{
             position: "relative",
             width: open ? `calc(100% - ${drawerWidth}px)` : "100%",
             top: open ? drawerWidth + "30%" : 0, // Ajusta el valor de 50 según sea necesario
             left: open ? drawerWidth : 0,
             //marginTop: open ? `calc(${drawerWidth}px + 500px)` : "0",
-          }} */
-        />
+          }}
+        /> */}
       </Grid>
     </>
   );
