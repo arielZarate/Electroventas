@@ -92,7 +92,7 @@ const ContentWrapper = styled(Box)({
 
   // justifyContent: "center",
   minHeight: "100vh", // Altura mínima para que el contenido se vea centrado
-  // backgroundColor: "#E0E0E0",
+  backgroundColor: "#f0f0f0",
 });
 
 export default HomePage;

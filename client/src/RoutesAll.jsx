@@ -10,16 +10,18 @@ import CardDetail from "./Components/Cards/CardDetail";
 import FormBrand from "./Components/Formulario/FormBrand";
 import FormCategory from "./Components/Formulario/FormCategory";
 import Footer from "./Components/Layout/Footer";
-
+import Checkout from "./Components/Cart/Checkout";
+import Cart from "./Components/Cart/Cart";
 function RoutesAll() {
   const location = useLocation();
 
   // Verifica si la ruta actual es la página de inicio
   const isLandingPage = location.pathname === "/";
+  const isCheckoutPage = location.pathname === "/checkout";
 
   return (
     <>
-      {!isLandingPage && <Header />}
+      {!isLandingPage && !isCheckoutPage && <Header />}
       <Router>
         {/* Renderiza el Header solo si no estás en la página de inicio */}
 
@@ -30,11 +32,11 @@ function RoutesAll() {
         <Route path="/formBrand" element={<FormBrand />} />
         <Route path="/formCategory" element={<FormCategory />} />
         <Route path="/products/:id" element={<CardDetail />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Router>
 
-      {/*  {!isLandingPage && <Footer />} */}
-
-      <Footer />
+      {/*    {!isLandingPage && !isCheckoutPage && <Footer />} */}
+      {!isCheckoutPage && <Footer />}
     </>
   );
 }

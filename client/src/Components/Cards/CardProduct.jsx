@@ -54,7 +54,7 @@ export default function CardProduct(props) {
         <CardHeader
           action={
             <Typography
-              variant="h6"
+              variant="h5"
               component="p"
               color="textSecondary"
               sx={{ marginRight: "10px" }}

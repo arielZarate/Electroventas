@@ -1,0 +1,572 @@
+
+
+
+=====================COMPONENTE FORMULKARIO CON USESTATE===========================================
+import React, { useState } from "react";
+
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  IconButton,
+  Paper,
+  TextField,
+  Typography,
+  Grid,
+  Button,
+  FormHelperText,
+} from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import { FaMapMarkerAlt } from "react-icons/fa";
+import { useForm, Controller } from "react-hook-form";
+
+/* const validateField = ({ name, value }) => {
+  switch (name) {
+    case "email":
+      if (!value) {
+        return "Este campo es obligatorio";
+      } else if (
+        !/^(?=.*[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com))/.test(value)
+      ) {
+        return "Ingresa un correo válido de Gmail o Hotmail";
+      }
+      return ""; // Sin errores
+    default:
+      return ""; // Si no hay validación específica para el campo
+  }
+};
+ */
+
+const validateField = (input) => {
+  let error = {};
+
+  //email
+  if (!input.email) {
+    error.email = "Email requerido";
+  } else {
+    //if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/.test(input.email))
+    if (!/^(?=.*[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com))/.test(input.email))
+      error.email = "El email es inválido";
+  }
+  /*   //password
+  if (!input.password) {
+    error.password = "Contraseña requerida";
+  } else if (input.password.length < 4) {
+    error.password = "Contraseña invalida menor a 4 caracteres";
+  } */
+
+  return error;
+};
+
+export default function AddressForm() {
+  /*  const {
+    register,
+    handleSubmit,
+    control,
+    //  setError,
+    setValue, // Agrega setValue a los destructurados
+    formState: { errors, isValid, isDirty },
+  } = useForm({
+    shouldUnregister: false, // Evita que el campo se desregistre cuando pierde el foco
+  }); */
+
+  const [input, setInput] = useState({
+    email: "",
+  });
+  const [error, setError] = useState({});
+
+  //handle
+  const handleChange = (e) => {
+    // console.log(e.target.value);
+    const { name, value } = e.target;
+
+    setInput({
+      ...input,
+      [name]: value,
+    });
+
+    setError(validateField({ ...input, [name]: value }));
+  };
+
+  /*   const onSubmit = (data) => {
+    console.log("se hizo click");
+  };
+ */
+
+  const handleClick = (e) => {
+    e.preventDefault();
+  };
+  /* validador de Cuil */
+  /*   const formatCuil = (cuil) => {
+    const formattedCUIL = cuil
+      .replace(/\D/g, "")
+
+      .replace(/^(\d{2})(\d{1,8})(\d{1})$/, "$1-$2-$3");
+    return formattedCUIL.slice(0, 13);
+  };
+ */
+  return (
+    <Paper sx={{ padding: "20px", margin: "10px" }}>
+      <Box
+        sx={{
+          backgroundColor: "#000",
+          color: "#fff",
+          padding: "4px",
+          display: "flex",
+          alignItems: "center",
+          marginY: "16px",
+          borderRadius: "5px",
+        }}
+      >
+        <IconButton
+          sx={{
+            backgroundColor: "#000",
+            color: "#fff",
+            padding: "8px",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <FaMapMarkerAlt />
+        </IconButton>
+        <Typography variant="h6">DIRECCION DE ENVIO</Typography>
+      </Box>
+
+      <form onSubmit={handleClick}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={12}>
+            <TextField
+              id="email"
+              name="email"
+              label="Correo Electronico"
+              /* {...register(
+                "email",
+
+                {
+                  required: "Este campo es obligatorio",
+
+                  pattern: {
+                    value: /^(?=.*[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com))/,
+                    message: "Ingresa un correo válido de Gmail o Hotmail",
+                  },
+                }
+              )} */
+              fullWidth
+              autoComplete="ingrese correo"
+              variant="outlined"
+              ///error={Boolean(errors.email)}
+              error={error.email ? true : false}
+              autoFocus={true}
+              value={input.email}
+              onChange={(e) => {
+                handleChange(e);
+              }} // helperText={errors.email ? errors.email.message : ""}
+              helperText={error.email ? error.email : ""}
+            />
+          </Grid>
+        </Grid>
+      </form>
+    </Paper>
+  );
+}
+
+
+
+
+
+//========================================================================================
+==============================================================================================
+
+
+ <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={12}>
+            <TextField
+              {...register("email", {
+                required: "Este campo es obligatorio",
+                pattern: {
+                  value: /^(?=.*[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com))/,
+                  message: "Ingresa un correo válido de Gmail o Hotmail",
+                },
+              })}
+              label="Correo Electronico"
+              fullWidth
+              autoComplete="ingrese correo"
+              variant="outlined"
+              error={Boolean(errors.email)}
+              helperText={errors.email ? errors.email.message : ""}
+            />
+          </Grid>
+        </Grid>
+        <button type="submit">Enviar</button>
+      </form>
+
+
+      NOTA: ESTE CODIGO VERIFICA Y VALIDA CUANDO SE HACE CLICK NADA MAS SINO NO LO VALIDA
+
+
+
+
+
+
+      //==========================================================
+
+
+      
+ {/*  <Box sx={{ marginY: 5 }}>
+          <Controller
+            name="password"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Contraseña"
+                variant="outlined"
+                fullWidth
+                type="password"
+                error={Boolean(errors.password)}
+                helperText={errors.password ? errors.password.message : ""}
+                onChange={handleChange}
+              />
+            )}
+            rules={{
+              required: "Este campo es obligatorio",
+              // Otras reglas de validación para el campo de contraseña
+            }}
+          />
+        </Box> */}
+
+        {/* <Grid container spacing={3}>
+          <Grid item xs={12} sm={12}>
+            <Controller
+              name="email"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Correo Electronico"
+                  fullWidth
+                  autoComplete="ingrese correo"
+                  variant="outlined"
+                  autoFocus={true}
+                  error={Boolean(errors?.email)}
+                  helperText={errors.email ? errors.email.message : ""}
+                  onChange={handleChange}
+                />
+              )}
+              rules={{
+                required: "Este campo es obligatorio",
+                pattern: {
+                  value: /^(?=.*[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com))/,
+                  message: "Ingresa un correo válido de Gmail o Hotmail",
+                },
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={6} sm={6} md={6} lg={6}>
+            <Controller
+              name="firstName"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Nombre"
+                  fullWidth
+                  autoComplete="nombre de familia"
+                  variant="outlined"
+                  error={Boolean(errors?.firstName)}
+                  helperText={errors.firstName ? errors.firstName.message : ""}
+                />
+              )}
+              rules={{
+                required: "Este campo es obligatorio",
+                pattern: {
+                  value: /^[A-Za-z]+$/,
+                  message: "El nombre solo puede contener letras",
+                },
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={6} sm={6} md={6} lg={6}>
+            <Controller
+              name="lastName"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Apellido"
+                  fullWidth
+                  autoComplete="apellido de familia"
+                  variant="outlined"
+                  error={Boolean(errors.lastName)}
+                  helperText={errors.lastName ? errors.lastName.message : ""}
+                />
+              )}
+              rules={{
+                required: "Este campo es obligatorio",
+                pattern: {
+                  value: /^[A-Za-z]+$/,
+                  message: "El apellido solo puede contener letras",
+                },
+              }}
+            />
+          </Grid>
+        </Grid> */}
+        {/* <Grid container spacing={3} sx={{ marginY: "16px" }}>
+          
+        </Grid> */}
+
+/*  <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Controller
+              id="cuil"
+              name="cuil"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: "Este campo es obligatorio",
+                pattern: {
+                  // value: /^\d{2}-\d{7,8}-\d{1}$/,
+                  message: "El CUIL debe tener el formato XX-XXXXXXXX-X",
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  id="cuil"
+                  label="CUIL"
+                  fullWidth
+                  autoComplete="ingrese su cuil"
+                  variant="outlined"
+                  value={formatCuil(field.value)}
+                  onChange={(e) => field.onChange(formatCuil(e.target.value))}
+                  error={Boolean(errors.cuil)}
+                  helperText={errors.cuil ? errors.cuil.message : ""}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12}>
+            <TextField
+              id="phone"
+              name="phone"
+              label="Telefono Celular"
+              fullWidth
+              // autoComplete="ingrese telefono"
+              variant="outlined"
+              {...register("phone")}
+              // error={Boolean(errors.phone)}
+              //helperText={errors.phone ? errors.phone.message : ""}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12}>
+            <TextField
+              id="address"
+              name="address"
+              label="Direccion"
+              fullWidth
+              autoComplete="nombre direccion"
+              variant="outlined"
+              {...register("address", {
+                required: "Este campo es obligatorio",
+              })}
+              error={Boolean(errors.address)}
+              helperText={errors.address ? errors.address.message : ""}
+            />
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={3} sx={{ marginTop: "7px" }}>
+          <Grid item xs={6} sm={6} md={6} lg={6}>
+            <TextField
+              //required
+              id="city"
+              name="city"
+              label="Ciudad"
+              fullWidth
+              autoComplete="ingrese ciudad "
+              variant="outlined"
+              {...register("city", {
+                required: "Este campo es obligatorio",
+                pattern: {
+                  value: /^[A-Za-z\s]+$/,
+                  message: "Por favor ingrese solo letras",
+                },
+                minLength: {
+                  value: 3,
+                  message: "Debe tener al menos 3 letras",
+                },
+              })}
+              error={Boolean(errors.city)}
+              helperText={errors.city ? errors.city.message : ""}
+            />
+          </Grid>
+          <Grid item xs={6} sm={6} md={6} lg={6}>
+            <TextField
+              id="state"
+              name="state"
+              label="Provincia"
+              fullWidth
+              variant="outlined"
+              {...register("state", {
+                required: "Este campo es obligatorio",
+                pattern: {
+                  value: /^[A-Za-z\s]+$/,
+                  message: "Por favor ingrese solo letras",
+                },
+                minLength: {
+                  value: 3,
+                  message: "Debe tener al menos 3 letras",
+                },
+              })}
+              error={Boolean(errors.state)}
+              helperText={errors.state ? errors.state.message : ""}
+            />
+          </Grid>
+          <Grid item xs={6} sm={6} md={6} lg={6}>
+            <TextField
+              // required
+              id="codePostal"
+              name="codePostal"
+              label="Codigo Postal"
+              fullWidth
+              autoComplete="ingrese su codigo postal"
+              variant="outlined"
+              {...register("codePostal")}
+
+              //error={Boolean(errors.codePostal)}
+              ///helperText={errors.codePostal ? errors.codePostal.message : ""}
+            />
+          </Grid>
+          <Grid item xs={6} sm={6} md={6} lg={6}>
+            <TextField
+              // required
+              id="country"
+              name="country"
+              label="Pais"
+              fullWidth
+              autoComplete="ingrese pais"
+              variant="outlined"
+              {...register("country", {
+                required: "Este campo es obligatorio",
+                pattern: {
+                  value: /^[A-Za-z\s]+$/,
+                  message: "Por favor ingrese solo letras",
+                },
+                minLength: {
+                  value: 3,
+                  message: "Debe tener al menos 3 letras",
+                },
+              })}
+              error={Boolean(errors.country)}
+              helperText={errors.country ? errors.country.message : ""}
+            />
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={3} sx={{ marginY: "14px" }}>
+          <Grid item xs={12}>
+            <TextField
+              // required
+              id="company"
+              name="company"
+              label="Empresa"
+              fullWidth
+              autoComplete="nombre de su empresa"
+              variant="outlined"
+              {...register("company", {
+                required: "Este campo es obligatorio",
+                pattern: {
+                  value: /^[A-Za-z\s]+$/,
+                  message: "Por favor ingrese solo letras",
+                },
+                minLength: {
+                  value: 3,
+                  message: "Debe tener al menos 3 letras",
+                },
+              })}
+              error={Boolean(errors.company)}
+              helperText={errors.company ? errors.company.message : ""}
+            />
+          </Grid> */
+
+/*   <Grid item xs={12} sm={12}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel id="facture-label">Tipo de Factura</InputLabel>
+              <Select
+                labelId="facture-label"
+                id="facture"
+                name="facture"
+                label="Tipo de Factura"
+                defaultValue=""
+                {...register("facture", {
+                  required: "Este campo es obligatorio",
+                })}
+                error={Boolean(errors.facture)}
+                // helperText={errors.facture ? errors.facture.message : ""}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value="A">FACTURA A</MenuItem>
+                <MenuItem value="B">FACTURA B</MenuItem>
+              </Select>
+
+              <FormHelperText error={Boolean(errors.facture)}>
+                {errors.facture && errors.facture.message}
+              </FormHelperText>
+            </FormControl>
+          </Grid> */
+
+/*  </Grid> */
+
+/*    <Grid item xs={12}>
+          <FormControlLabel
+            control={
+              <Checkbox color="secondary" name="saveAddress" value="yes" />
+            }
+            label="Utilice esta direccion para detalle de pago"
+          />
+        </Grid>  */
+
+/*  <TextField
+              id="cuil"
+              name="cuil"
+              label="CUIL"
+              fullWidth
+              autoComplete="ingrese su cuil"
+              variant="outlined"
+              onBlur={handleCuilBlur}
+              {...register("cuil", {
+                required: "Este campo es obligatorio",
+                pattern: {
+                  value: /^\d{2}-\d{7,8}-\d{1}$/,
+                  message: "El CUIL debe tener el formato XX-XXXXXXXX-X",
+                },
+              })}
+              error={Boolean(errors.cuil)}
+              helperText={errors.cuil ? errors.cuil.message : ""}
+            />  */
+
+/*   <Box sx={{ marginTop: "16px" }}>
+          <Button
+            type="submit"
+            variant="contained"
+            // color={isValid ? "primary" : "inherit"}
+            fullWidth
+            // disabled={!isValid}
+            //disabled={!isValid}
+            color="info"
+            sx={{ padding: "16px" }}
+          >
+            Enviar
+          </Button>
+        </Box>  */

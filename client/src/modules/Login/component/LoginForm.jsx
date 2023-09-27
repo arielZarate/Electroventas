@@ -48,7 +48,7 @@ export default function LoginForm() {
   });
   //errors
   const [error, setError] = useState({
-    error: false,
+    // error: false,
     /*    message:"" */
   });
   //loading

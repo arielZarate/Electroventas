@@ -28,7 +28,7 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { getProductByID } from "../../redux/feactures/Thunks/products";
 import { useDispatch, useSelector } from "react-redux";
 import Comments from "../Comments/Comments";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 //TODO: acounting
 import {
@@ -154,6 +154,8 @@ const CardDetail = () => {
                 }}
               >
                 <Button
+                  component={Link}
+                  to="/checkout"
                   variant="contained"
                   color="primary"
                   startIcon={<ShoppingCartIcon />}
@@ -161,6 +163,7 @@ const CardDetail = () => {
                 >
                   Comprar
                 </Button>
+
                 <Button
                   variant="contained"
                   color="success"
