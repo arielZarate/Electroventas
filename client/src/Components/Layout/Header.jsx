@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 //dependencias de material
@@ -17,6 +17,9 @@ import {
   ListItemButton,
   ListItem,
   List,
+  Link,
+  Menu,
+  MenuItem,
 } from "@mui/material/";
 
 // MenuIcon,
@@ -26,14 +29,23 @@ import {
   AiOutlineShoppingCart,
   AiOutlineMail,
 } from "react-icons/ai";
-import { FaBolt, FaUsers } from "react-icons/fa";
+import { FaBolt, FaUsers, FaUserCircle } from "react-icons/fa";
 import { AiOutlineMenu } from "react-icons/ai";
+
 import { ListItemIcon } from "@mui/material";
 
 //==============SearchBar================
 import SearchBar from "./SearchBar";
 
+//=============CartDialog==========================
+import CartDialog from "../Cart/CartDialog";
+
+import { Link as RouterLink } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../../redux/feactures/Thunks/user";
+import { Notification } from "../../helpers/Notification/Notification";
 //==============================================================================
+
 //drawer
 const drawerWidth = 240;
 
@@ -63,7 +75,45 @@ const navItems = [
 //========================================================================================
 
 function DrawerAppBar(props) {
-  /*   const { window } = props; */
+  const dispatch = useDispatch();
+
+  ///SELECTOR
+
+  const isLogged = useSelector((state) => state.userStore.isLogged);
+
+  // Manejar el clic en el botón de cierre de sesión
+  const handleLogout = () => {
+    dispatch(logoutUser()); // Llamar al thunk de logoutUser al hacer clic en el botón
+
+    setTimeout(() => {
+      Notification("info", `Session cerrada correctamente`, "center-end", 3000);
+
+      // Actualizar el estado global para reflejar el cierre de sesión
+    }, 1500);
+  };
+
+  //================cart dialog =====================
+  const [cartDialogOpen, setCartDialogOpen] = useState(false);
+
+  /* 
+  TODO: MENU STATE
+  */
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleCartDialogOpen = () => {
+    setCartDialogOpen(true);
+  };
+
+  //TODO: state mobile
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -127,27 +177,73 @@ function DrawerAppBar(props) {
           </Box>
           {/* fin */}
 
-          {/* bandera */}
-
-          <Box sx={{ display: { xs: "flex", sm: "block" } }}>
+          <Box sx={{ display: { xs: "flex", sm: "inline-block" } }}>
             <IconButton
-              size="large"
               aria-label="show 3 new notifications"
               color="inherit"
+              onClick={handleCartDialogOpen} // Añade este evento onClick
             >
               <Badge badgeContent={3} color="error">
-                <AiOutlineShoppingCart />
+                <AiOutlineShoppingCart size={30} />
               </Badge>
             </IconButton>
 
-            <Button
-              href="#"
-              variant="outlined"
-              color="inherit"
-              sx={{ my: 1, mr: 5 }}
-            >
-              Login
-            </Button>
+            <Box sx={{ display: { xs: "flex", sm: "inline-block" } }}>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <FaUserCircle size={30} />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                {isLogged ? (
+                  <>
+                    <MenuItem
+                      onClick={handleClose}
+                      component={RouterLink}
+                      to="/profile"
+                    >
+                      Perfil
+                    </MenuItem>
+                    <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
+                  </>
+                ) : (
+                  <>
+                    <MenuItem
+                      onClick={handleClose}
+                      component={RouterLink}
+                      to="/auth/login"
+                    >
+                      Iniciar Sesión
+                    </MenuItem>
+                    <MenuItem
+                      onClick={handleClose}
+                      component={RouterLink}
+                      to="/auth/register"
+                    >
+                      Crear cuenta
+                    </MenuItem>
+                  </>
+                )}
+              </Menu>
+            </Box>
           </Box>
         </Toolbar>
 

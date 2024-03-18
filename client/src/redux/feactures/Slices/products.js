@@ -11,7 +11,7 @@ const initialState = {
   createProducts: null,
   error: "",
   statusOperation: false,
-
+  cartProduct: [],
   isLoading: false,
 };
 

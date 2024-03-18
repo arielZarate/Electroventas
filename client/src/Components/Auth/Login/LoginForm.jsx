@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 //ojo con axios ya configure una instancia de axios con los datos creados
 import AxiosInstance from "../../../utils/AxiosInstance"; //import axios from 'axios';
 import { useNavigate } from "react-router-dom";
@@ -13,13 +13,9 @@ import { LoadingButton } from "@mui/lab";
 import EmailLogin from "./loginInput/EmailLogin";
 import PasswordLogin from "./loginInput/PasswordLogin";
 import { Notification } from "../../../helpers/Notification/Notification";
-import {
-  getStoreToken,
-  storeToken,
-} from "../../../helpers/HandlerToken/StorageToken";
-import axios from "axios";
-//import {storeToken} from '../../../helpers/HandlerToken/StorageToken';
-
+import { LoginUser } from "../../../redux/feactures/Thunks/user";
+import { useDispatch, useSelector } from "react-redux";
+//=================validacion de email password=======================
 function validate(input) {
   let error = {};
 
@@ -33,12 +29,13 @@ function validate(input) {
   //password
   if (!input.password) {
     error.password = "Contraseña requerida";
-  } else if (input.password.length < 4) {
-    error.password = "Contraseña invalida menor a 4 caracteres";
+  } else if (input.password.length < 6) {
+    error.password = "Contraseña invalida menor a 6 caracteres";
   }
 
   return error;
 }
+//======================================================================
 
 export default function LoginForm() {
   //input
@@ -47,14 +44,13 @@ export default function LoginForm() {
     password: "",
   });
   //errors
-  const [error, setError] = useState({
-    // error: false,
-    /*    message:"" */
-  });
+  const [error, setError] = useState({});
   //loading
-  const [loading, setloading] = useState(false);
+  const [loadingButton, setLoadingButton] = useState(false);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isLogged = useSelector((state) => state.userStore.isLogged);
 
   //evento handleBlur
   const handleChange = (e) => {
@@ -67,9 +63,15 @@ export default function LoginForm() {
     setError(validate({ ...input, [name]: value }));
   };
 
+  useEffect(() => {
+    if (isLogged) {
+      navigate("/home");
+    }
+  }, [isLogged, navigate]);
+
+  //===========enviando datos al firebase o back =============
   const handleClick = async (e) => {
     e.preventDefault();
-    //  setloading(true);//esta cargando el boton
 
     try {
       /*     
@@ -84,27 +86,24 @@ export default function LoginForm() {
            }  
         ); */
 
-      const response = await AxiosInstance.post("/login/", input);
-      if (response.status >= 200 && response.status < 300) {
-        // localStorage.setItem("token",response.data.token);
-        storeToken(response.data.token);
-        // console.log("token guardado");
-        //console.log(response.data)
-        Notification(
-          "success",
-          "Ha iniciado sesion con exito",
-          "top-end",
-          2000
-        );
-      }
+      //    const response = await AxiosInstance.post("/login/", input);
+      //   if (response.status >= 200 && response.status < 300) {
+      setLoadingButton(true); // Activar la carga
+      dispatch(LoginUser({ email: input.email, password: input.password }));
     } catch (error) {
+      setLoadingButton(false);
       console.log(error.message);
-
-      let send = error.response.data.error;
-      Notification("error", send, "bottom-end", 3000); //envio una notificacion con sweetAlert2
+    } finally {
+      setTimeout(() => {
+        setLoadingButton(false);
+      }, 1000);
     }
   };
 
+  /*   if (isLogged) {
+    navigate("/home");
+  } */
+  //=============================================================
   return (
     <>
       <Box component="form" onSubmit={handleClick}>
@@ -132,7 +131,8 @@ export default function LoginForm() {
           size="medium"
           type="submit"
           variant="contained"
-          loading={loading}
+          loading={loadingButton}
+          // disabled={loadingButton}
           loadingIndicator="Espere enviando datos ..."
           /* onClick={handleClick} */
           /*  loadingPosition='center' */

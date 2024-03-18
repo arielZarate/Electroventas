@@ -26,7 +26,7 @@ function HomePage() {
     // Simulación de la carga de datos (puedes reemplazar esto con una llamada a la API real)
     setTimeout(() => {
       setIsLoading(false); // Marcar como no cargando después de 1 segundo (por ejemplo)
-    }, 1000);
+    }, 1500);
   }, []);
 
   useEffect(() => {
